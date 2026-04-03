@@ -1,43 +1,27 @@
 # BMAD Personal Workflow Plugin
 
-BMAD Personal Workflow Plugin is a Codex-first adaptation of the BMAD method for solo builders.
+BMAD Personal Workflow Plugin is a Codex plugin for solo development workflows inspired by BMAD.
 
-This repository is now packaged as an installable Codex plugin.
-
-The distributable plugin lives in:
-
-- `plugins/bmad-personal-workflow/`
-
-The repo-local marketplace entry lives in:
-
-- `.agents/plugins/marketplace.json`
-
-Version 1 focuses on a single lightweight path:
+It packages a small set of role-based skills that guide work through:
 
 `idea -> clarify -> plan -> build -> review`
 
-## Goals
+## Current Features
 
-- Give solo developers a repeatable workflow without heavy process overhead
-- Keep outputs short, structured, and execution-oriented
-- Preserve clear handoffs between roles instead of letting one prompt do everything
-- Stay portable so the same BMAD core can later be adapted to Claude Code or another host
+This plugin currently provides four skill entry points:
 
-## Core Roles
+- `bmad-help`
+- `bmad-quick-dev`
+- `bmad-plan`
+- `bmad-review`
 
-- `analyst`: clarify the problem, scope, constraints, and success criteria
-- `planner`: turn the clarified brief into an actionable execution plan
-- `architect`: shape the solution, boundaries, interfaces, and risks
-- `builder`: convert the plan into implementation guidance and build steps
-- `reviewer`: inspect completeness, risks, regressions, and test gaps
+The workflow is designed for:
 
-Role specs live under [plugins/bmad-personal-workflow/references/core/agents/](./plugins/bmad-personal-workflow/references/core/agents/).
+- solo development
+- lightweight structured outputs
+- clear role handoffs across analysis, planning, build guidance, and review
 
-## Main Workflow
-
-The v1 workflow is defined in [plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md](./plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md).
-
-Expected outputs:
+Current outputs include:
 
 - `brief`
 - `plan`
@@ -45,73 +29,85 @@ Expected outputs:
 - `build-checklist`
 - `review-report`
 
-Templates for the main reusable documents live in:
+## Plugin Package
 
-- [plugins/bmad-personal-workflow/references/core/templates/brief.md](./plugins/bmad-personal-workflow/references/core/templates/brief.md)
-- [plugins/bmad-personal-workflow/references/core/templates/plan.md](./plugins/bmad-personal-workflow/references/core/templates/plan.md)
-- [plugins/bmad-personal-workflow/references/core/templates/solution-outline.md](./plugins/bmad-personal-workflow/references/core/templates/solution-outline.md)
-- [plugins/bmad-personal-workflow/references/core/templates/review-report.md](./plugins/bmad-personal-workflow/references/core/templates/review-report.md)
+The installable plugin package is:
 
-Global workflow rules live in [plugins/bmad-personal-workflow/references/core/rules/global.md](./plugins/bmad-personal-workflow/references/core/rules/global.md).
+- [plugins/bmad-personal-workflow](./plugins/bmad-personal-workflow)
 
-## Codex Integration
+The plugin manifest is:
 
-The canonical plugin package lives under `plugins/bmad-personal-workflow/`.
+- [plugins/bmad-personal-workflow/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow/.codex-plugin/plugin.json)
 
-Current skill entry points:
+The repo-local marketplace entry is:
 
-- `bmad-help`: explain the plugin, roles, workflow, and entry points
-- `bmad-quick-dev`: run the full solo workflow
-- `bmad-plan`: stop after clarify and plan
-- `bmad-review`: focus on review and risk analysis
+- [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
 
-The plugin manifest is at [plugins/bmad-personal-workflow/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow/.codex-plugin/plugin.json).
+## Installation
 
-## Installation And Distribution
+This project is distributed as a folder-based Codex plugin.
 
-According to the local Codex plugin scaffolding spec, a distributable plugin is a folder-based package, not an npm package.
+The full installation guide is here:
 
-For this repo that means:
+- [docs/install-codex-plugin.md](./docs/install-codex-plugin.md)
 
-- the installable plugin is the folder [plugins/bmad-personal-workflow](./plugins/bmad-personal-workflow)
-- Codex discovers it through [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
-- the marketplace points to `./plugins/bmad-personal-workflow`
+In short, users can either:
 
-This setup supports two distribution modes:
+1. use this repository directly with the included marketplace file
+2. copy `plugins/bmad-personal-workflow/` into a local plugins directory and register it in a marketplace file
 
-1. repo-local
-   Use this repository directly with its included marketplace file.
-2. home-local
-   Copy `plugins/bmad-personal-workflow` to `~/plugins/bmad-personal-workflow` and add the same entry shape to `~/.agents/plugins/marketplace.json`.
+## Usage
 
-## Usage Notes
+Use the plugin through its Codex skills:
 
-This v1 plugin does not implement slash-command compatibility. It preserves the same capability boundaries as `/bmad-help` or `/bmad-quick-dev`, but exposes them as Codex skills first.
+- `bmad-help` for plugin orientation
+- `bmad-quick-dev` for the full personal workflow
+- `bmad-plan` for clarify + planning only
+- `bmad-review` for review, risk, and validation guidance
 
-The workflow is intentionally lightweight:
+### Which Skill Should I Use?
 
-- It assumes a solo developer
-- It does not model release governance or team coordination
-- It prefers short structured outputs over long formal documents
+- `bmad-help`
+  Use this when you want to understand what the plugin does, what roles it uses, and which BMAD skill to start with.
 
-## Git Conventions
+- `bmad-quick-dev`
+  Use this when you want to take a feature, bugfix, or scoped change all the way through the personal workflow from idea to review.
 
-This repository uses a lightweight modern git commit setup:
+- `bmad-plan`
+  Use this when you want to clarify a request and produce a plan first, without going into build or review yet.
 
-- `.gitattributes` enforces consistent line endings across platforms
-- `commitlint` enforces Conventional Commits
-- `husky` runs commit message validation through the `commit-msg` hook
+- `bmad-review`
+  Use this when you already have a plan, patch, or implementation and want to inspect risks, regressions, and testing gaps.
 
-Examples:
+## Scope
 
-- `feat: add bugfix workflow variant`
-- `fix: correct plugin skill path`
-- `docs: clarify codex plugin usage`
+This plugin currently focuses on:
 
-## Future Direction
+- Codex skill-based usage
+- personal development workflows
+- compact, execution-oriented guidance
 
-Likely next steps:
+It does not currently include:
 
-- add a Claude Code adapter that maps the same BMAD core into slash commands and subagents
-- add optional MCP prompts for stronger structured routing
-- add workflow variants for bugfix, feature spike, and refactor-heavy work
+- Claude Code command adapters
+- team collaboration workflows
+- release governance flows
+
+## Workflow References
+
+The packaged workflow references live under:
+
+- [plugins/bmad-personal-workflow/references/core](./plugins/bmad-personal-workflow/references/core)
+
+Key references:
+
+- [quick-dev workflow](./plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md)
+- [role definitions](./plugins/bmad-personal-workflow/references/core/agents)
+- [templates](./plugins/bmad-personal-workflow/references/core/templates)
+- [global rules](./plugins/bmad-personal-workflow/references/core/rules/global.md)
+
+## Development
+
+Contributor-focused setup notes are in:
+
+- [docs/development.md](./docs/development.md)
