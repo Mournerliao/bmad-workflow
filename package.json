@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Codex-first BMAD workflow plugin for solo software development.",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "prepare": "husky",
     "commitlint": "commitlint --edit",

@@ -14,7 +14,7 @@ Use this skill for an end-to-end solo development request such as:
 
 ## Workflow
 
-Follow the workflow defined in `core/workflows/quick-dev.md`.
+Follow the workflow defined in `references/core/workflows/quick-dev.md`.
 
 Run these stages in order:
 
@@ -33,12 +33,12 @@ Run these stages in order:
 
 ## Required References
 
-- `core/agents/analyst.md`
-- `core/agents/planner.md`
-- `core/agents/architect.md`
-- `core/agents/builder.md`
-- `core/agents/reviewer.md`
-- `core/rules/global.md`
+- `references/core/agents/analyst.md`
+- `references/core/agents/planner.md`
+- `references/core/agents/architect.md`
+- `references/core/agents/builder.md`
+- `references/core/agents/reviewer.md`
+- `references/core/rules/global.md`
 
 ## Output Contract
 
@@ -50,4 +50,4 @@ Deliver the final response in five clearly labeled sections:
 - `build-checklist`
 - `review-report`
 
-Use the templates in `core/templates/` when useful, but keep content proportional to the request.
+Use the templates in `references/core/templates/` when useful, but keep content proportional to the request.

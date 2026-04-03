@@ -16,9 +16,9 @@ Use this skill when the user wants orientation on the BMAD personal workflow plu
 
 ## Recommended Sources
 
+- `references/core/workflows/quick-dev.md`
+- `references/core/rules/global.md`
 - `README.md`
-- `core/workflows/quick-dev.md`
-- `core/rules/global.md`
 
 ## Entry Point Guidance
 

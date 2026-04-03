@@ -2,10 +2,15 @@
 
 BMAD Personal Workflow Plugin is a Codex-first adaptation of the BMAD method for solo builders.
 
-This repository separates the workflow into:
+This repository is now packaged as an installable Codex plugin.
 
-- `core/`: platform-agnostic workflow assets
-- `codex/`: Codex plugin manifest and skill adapters
+The distributable plugin lives in:
+
+- `plugins/bmad-personal-workflow/`
+
+The repo-local marketplace entry lives in:
+
+- `.agents/plugins/marketplace.json`
 
 Version 1 focuses on a single lightweight path:
 
@@ -26,11 +31,11 @@ Version 1 focuses on a single lightweight path:
 - `builder`: convert the plan into implementation guidance and build steps
 - `reviewer`: inspect completeness, risks, regressions, and test gaps
 
-Role specs live in [core/agents/analyst.md](./core/agents/analyst.md), [core/agents/planner.md](./core/agents/planner.md), [core/agents/architect.md](./core/agents/architect.md), [core/agents/builder.md](./core/agents/builder.md), and [core/agents/reviewer.md](./core/agents/reviewer.md).
+Role specs live under [plugins/bmad-personal-workflow/references/core/agents/](./plugins/bmad-personal-workflow/references/core/agents/).
 
 ## Main Workflow
 
-The v1 workflow is defined in [core/workflows/quick-dev.md](./core/workflows/quick-dev.md).
+The v1 workflow is defined in [plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md](./plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md).
 
 Expected outputs:
 
@@ -42,16 +47,16 @@ Expected outputs:
 
 Templates for the main reusable documents live in:
 
-- [core/templates/brief.md](./core/templates/brief.md)
-- [core/templates/plan.md](./core/templates/plan.md)
-- [core/templates/solution-outline.md](./core/templates/solution-outline.md)
-- [core/templates/review-report.md](./core/templates/review-report.md)
+- [plugins/bmad-personal-workflow/references/core/templates/brief.md](./plugins/bmad-personal-workflow/references/core/templates/brief.md)
+- [plugins/bmad-personal-workflow/references/core/templates/plan.md](./plugins/bmad-personal-workflow/references/core/templates/plan.md)
+- [plugins/bmad-personal-workflow/references/core/templates/solution-outline.md](./plugins/bmad-personal-workflow/references/core/templates/solution-outline.md)
+- [plugins/bmad-personal-workflow/references/core/templates/review-report.md](./plugins/bmad-personal-workflow/references/core/templates/review-report.md)
 
-Global workflow rules live in [core/rules/global.md](./core/rules/global.md).
+Global workflow rules live in [plugins/bmad-personal-workflow/references/core/rules/global.md](./plugins/bmad-personal-workflow/references/core/rules/global.md).
 
 ## Codex Integration
 
-The Codex plugin adapter lives under `codex/`.
+The canonical plugin package lives under `plugins/bmad-personal-workflow/`.
 
 Current skill entry points:
 
@@ -60,7 +65,24 @@ Current skill entry points:
 - `bmad-plan`: stop after clarify and plan
 - `bmad-review`: focus on review and risk analysis
 
-The plugin manifest is at [codex/.codex-plugin/plugin.json](./codex/.codex-plugin/plugin.json).
+The plugin manifest is at [plugins/bmad-personal-workflow/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow/.codex-plugin/plugin.json).
+
+## Installation And Distribution
+
+According to the local Codex plugin scaffolding spec, a distributable plugin is a folder-based package, not an npm package.
+
+For this repo that means:
+
+- the installable plugin is the folder [plugins/bmad-personal-workflow](./plugins/bmad-personal-workflow)
+- Codex discovers it through [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
+- the marketplace points to `./plugins/bmad-personal-workflow`
+
+This setup supports two distribution modes:
+
+1. repo-local
+   Use this repository directly with its included marketplace file.
+2. home-local
+   Copy `plugins/bmad-personal-workflow` to `~/plugins/bmad-personal-workflow` and add the same entry shape to `~/.agents/plugins/marketplace.json`.
 
 ## Usage Notes
 

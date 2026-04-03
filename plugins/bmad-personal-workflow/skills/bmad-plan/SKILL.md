@@ -19,11 +19,11 @@ Stop after planning. Do not generate `build-checklist` or `review-report` unless
 
 ## Required References
 
-- `core/agents/analyst.md`
-- `core/agents/planner.md`
-- `core/agents/architect.md`
-- `core/workflows/quick-dev.md`
-- `core/rules/global.md`
+- `references/core/agents/analyst.md`
+- `references/core/agents/planner.md`
+- `references/core/agents/architect.md`
+- `references/core/workflows/quick-dev.md`
+- `references/core/rules/global.md`
 
 ## Output Contract
 

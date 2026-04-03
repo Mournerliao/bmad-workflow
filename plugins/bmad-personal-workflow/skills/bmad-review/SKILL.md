@@ -22,9 +22,9 @@ Review the work against the intent, technical direction, and validation expectat
 
 ## Required References
 
-- `core/agents/reviewer.md`
-- `core/rules/global.md`
-- `core/templates/review-report.md`
+- `references/core/agents/reviewer.md`
+- `references/core/rules/global.md`
+- `references/core/templates/review-report.md`
 
 ## Output Contract
 
