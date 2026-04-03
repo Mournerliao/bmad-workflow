@@ -28,8 +28,8 @@ For the concrete on-disk layout, this repository follows the Codex plugin scaffo
 
 This is the layout used by this repository:
 
-- plugin package: `plugins/bmad-personal-workflow/`
-- manifest: `plugins/bmad-personal-workflow/.codex-plugin/plugin.json`
+- plugin package: `plugins/bmad-personal-workflow-codex/`
+- manifest: `plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json`
 - marketplace entry: `.agents/plugins/marketplace.json`
 
 ## Install Option 1: Use This Repository Directly
@@ -43,10 +43,10 @@ Use this option when a user wants the plugin from this repo without copying file
 
 ```json
 {
-  "name": "bmad-personal-workflow",
+  "name": "bmad-personal-workflow-codex",
   "source": {
     "source": "local",
-    "path": "./plugins/bmad-personal-workflow"
+    "path": "./plugins/bmad-personal-workflow-codex"
   },
   "policy": {
     "installation": "AVAILABLE",
@@ -62,12 +62,12 @@ Use this option when a user wants the plugin from this repo without copying file
 
 Use this option when a user wants the plugin outside this repository.
 
-1. Copy `plugins/bmad-personal-workflow/` to:
-   `~/plugins/bmad-personal-workflow`
+1. Copy `plugins/bmad-personal-workflow-codex/` to:
+   `~/plugins/bmad-personal-workflow-codex`
 2. Create or update:
    `~/.agents/plugins/marketplace.json`
 3. Add a plugin entry pointing to:
-   `./plugins/bmad-personal-workflow`
+   `./plugins/bmad-personal-workflow-codex`
 
 Example marketplace file:
 
@@ -79,10 +79,10 @@ Example marketplace file:
   },
   "plugins": [
     {
-      "name": "bmad-personal-workflow",
+      "name": "bmad-personal-workflow-codex",
       "source": {
         "source": "local",
-        "path": "./plugins/bmad-personal-workflow"
+        "path": "./plugins/bmad-personal-workflow-codex"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -99,10 +99,10 @@ Example marketplace file:
 For distribution, share:
 
 - the GitHub repository URL
-- the plugin directory path: `plugins/bmad-personal-workflow`
+- the plugin directory path: `plugins/bmad-personal-workflow-codex`
 - this installation guide
 
-If you want a fully self-contained artifact, distribute the `plugins/bmad-personal-workflow/` folder together with the marketplace snippet above.
+If you want a fully self-contained artifact, distribute the `plugins/bmad-personal-workflow-codex/` folder together with the marketplace snippet above.
 
 ## Notes And Limits
 

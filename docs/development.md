@@ -28,7 +28,7 @@ npm install
 
 The repository ships a folder-based Codex plugin package:
 
-- `plugins/bmad-personal-workflow/`
+- `plugins/bmad-personal-workflow-codex/`
 
 The repo-local marketplace entry is:
 

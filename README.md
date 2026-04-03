@@ -1,8 +1,14 @@
-# BMAD Personal Workflow Plugin
+# BMAD Personal Workflow
 
-BMAD Personal Workflow Plugin is a Codex plugin for solo development workflows inspired by BMAD.
+BMAD Personal Workflow is a platform-neutral personal development workflow inspired by BMAD.
 
-It packages a small set of role-based skills that guide work through:
+It currently ships with:
+
+- a Codex plugin distribution
+- a Claude Code adapter
+- a shared workflow core for future platform adapters
+
+The workflow guides work through:
 
 `idea -> clarify -> plan -> build -> review`
 
@@ -29,36 +35,28 @@ Current outputs include:
 - `build-checklist`
 - `review-report`
 
-## Plugin Package
+## Platform Artifacts
 
-The installable plugin package is:
+Codex installable package:
 
-- [plugins/bmad-personal-workflow](./plugins/bmad-personal-workflow)
-
-The plugin manifest is:
-
-- [plugins/bmad-personal-workflow/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow/.codex-plugin/plugin.json)
-
-The repo-local marketplace entry is:
-
+- [plugins/bmad-personal-workflow-codex](./plugins/bmad-personal-workflow-codex)
+- [plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json)
 - [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
 
-## Installation
+Claude adapter bundle:
 
-This project is distributed as a folder-based Codex plugin.
+- [plugins/bmad-personal-workflow-claude](./plugins/bmad-personal-workflow-claude)
 
-The full installation guide is here:
+The Claude bundle is currently a shareable adapter bundle for Claude Code skills and agents. It is not presented here as a formally installable plugin package in the same sense as the Codex bundle.
 
-- [docs/install-codex-plugin.md](./docs/install-codex-plugin.md)
+## Platform Guides
 
-In short, users can either:
-
-1. use this repository directly with the included marketplace file
-2. copy `plugins/bmad-personal-workflow/` into a local plugins directory and register it in a marketplace file
+- [Install for Codex](./docs/install-codex-plugin.md)
+- [Use with Claude Code](./docs/install-claude-plugin.md)
 
 ## Usage
 
-Use the plugin through its Codex skills:
+Current workflow entry points:
 
 - `bmad-help` for plugin orientation
 - `bmad-quick-dev` for the full personal workflow
@@ -81,33 +79,30 @@ Use the plugin through its Codex skills:
 
 ## Scope
 
-This plugin currently focuses on:
+This project currently focuses on:
 
-- Codex skill-based usage
+- Codex and Claude Code adapters
 - personal development workflows
 - compact, execution-oriented guidance
 
-It does not currently include:
-
-- Claude Code command adapters
-- team collaboration workflows
-- release governance flows
-
 ## Workflow References
 
-The packaged workflow references live under:
+The shared source of truth lives under:
 
-- [plugins/bmad-personal-workflow/references/core](./plugins/bmad-personal-workflow/references/core)
+- [core](./core)
 
 Key references:
 
-- [quick-dev workflow](./plugins/bmad-personal-workflow/references/core/workflows/quick-dev.md)
-- [role definitions](./plugins/bmad-personal-workflow/references/core/agents)
-- [templates](./plugins/bmad-personal-workflow/references/core/templates)
-- [global rules](./plugins/bmad-personal-workflow/references/core/rules/global.md)
+- [quick-dev workflow](./core/workflows/quick-dev.md)
+- [role definitions](./core/roles)
+- [templates](./core/templates)
+- [global rules](./core/rules/global.md)
 
 ## Development
 
 Contributor-focused setup notes are in:
 
 - [docs/development.md](./docs/development.md)
+- [docs/architecture.md](./docs/architecture.md)
+- [docs/codex-adapter.md](./docs/codex-adapter.md)
+- [docs/claude-adapter.md](./docs/claude-adapter.md)

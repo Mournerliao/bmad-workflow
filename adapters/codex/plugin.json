@@ -1,0 +1,42 @@
+{
+  "name": "bmad-personal-workflow-codex",
+  "version": "0.1.0",
+  "description": "Codex-first BMAD workflow plugin for solo software development.",
+  "author": {
+    "name": "Mournerliao",
+    "email": "997749670@qq.com",
+    "url": "https://github.com/Mournerliao"
+  },
+  "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "repository": "https://github.com/Mournerliao/bmad-workflow",
+  "license": "UNLICENSED",
+  "keywords": [
+    "bmad",
+    "workflow",
+    "codex",
+    "plugin",
+    "solo-development"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "BMAD Personal Workflow",
+    "shortDescription": "A lightweight BMAD workflow for solo builders in Codex.",
+    "longDescription": "Guides a solo developer through clarify, plan, build, and review using a small set of distinct BMAD roles and compact structured outputs.",
+    "developerName": "Mournerliao",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Planning",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Mournerliao/bmad-workflow",
+    "privacyPolicyURL": "https://github.com/Mournerliao/bmad-workflow",
+    "termsOfServiceURL": "https://github.com/Mournerliao/bmad-workflow",
+    "defaultPrompt": [
+      "Use BMAD quick-dev for this feature idea.",
+      "Plan this change with the BMAD solo workflow.",
+      "Review this implementation with BMAD."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
