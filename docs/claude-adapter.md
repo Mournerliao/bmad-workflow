@@ -28,7 +28,11 @@ Subagents:
 ## Source Layout
 
 - adapter source: `adapters/claude/`
-- Claude distribution bundle: `plugins/bmad-personal-workflow-claude/`
+- Claude plugin package: `plugins/bmad-personal-workflow-claude/`
+
+The plugin package includes a Claude manifest at:
+
+- `plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json`
 
 ## Official Alignment
 

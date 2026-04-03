@@ -43,11 +43,13 @@ Codex installable package:
 - [plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json)
 - [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
 
-Claude adapter bundle:
+Claude plugin package:
 
 - [plugins/bmad-personal-workflow-claude](./plugins/bmad-personal-workflow-claude)
 
-The Claude bundle is currently a shareable adapter bundle for Claude Code skills and agents. It is not presented here as a formally installable plugin package in the same sense as the Codex bundle.
+Claude plugin manifest:
+
+- [plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json](./plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json)
 
 ## Platform Guides
 

@@ -1,15 +1,16 @@
 # Use With Claude Code
 
-This guide explains how to use the Claude-oriented BMAD adapter bundle in this repository.
+This guide explains how to use the Claude-oriented BMAD plugin package in this repository.
 
-## Bundle
+## Plugin Package
 
-The Claude adapter bundle is:
+The Claude plugin package is:
 
 - `plugins/bmad-personal-workflow-claude/`
 
 It includes:
 
+- `.claude-plugin/plugin.json`
 - `skills/`
 - `agents/`
 - `references/core/`
@@ -31,9 +32,25 @@ Agents:
 - `builder`
 - `reviewer`
 
+## Local Testing
+
+Claude Code officially supports local plugin testing with `--plugin-dir`.
+
+From the repository root, run:
+
+```bash
+claude --plugin-dir ./plugins/bmad-personal-workflow-claude
+```
+
+After Claude Code starts, reload plugins if needed:
+
+```text
+/reload-plugins
+```
+
 ## How To Use It
 
-Use the Claude-oriented bundle as the source material for your Claude Code setup.
+Use the Claude plugin package as the source for your Claude Code setup.
 
 The key pieces are:
 
@@ -41,11 +58,17 @@ The key pieces are:
 - the role agents in `plugins/bmad-personal-workflow-claude/agents/`
 - the shared references in `plugins/bmad-personal-workflow-claude/references/core/`
 
+Plugin skills are namespaced by the plugin name, so the expected command surface is:
+
+- `/bmad-personal-workflow-claude:bmad-help`
+- `/bmad-personal-workflow-claude:bmad-quick-dev`
+- `/bmad-personal-workflow-claude:bmad-plan`
+- `/bmad-personal-workflow-claude:bmad-review`
+
 ## Notes
 
 - this adapter is skills-first
 - it does not include a slash-command compatibility layer
 - it does not include Claude MCP integration in the initial adaptation
-- it is not documented here as a formal installable plugin package with a host-specific plugin manifest
 
 For implementation details of the adapter itself, see [claude-adapter.md](./claude-adapter.md).

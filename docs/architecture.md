@@ -38,7 +38,7 @@ Checked-in host artifacts derived from the shared core and adapter layers.
 Current distributions:
 
 - `plugins/bmad-personal-workflow-codex/` as the Codex installable package
-- `plugins/bmad-personal-workflow-claude/` as the Claude-oriented adapter bundle
+- `plugins/bmad-personal-workflow-claude/` as the Claude installable plugin package
 
 These should be derived from `core/` plus the appropriate adapter.
 

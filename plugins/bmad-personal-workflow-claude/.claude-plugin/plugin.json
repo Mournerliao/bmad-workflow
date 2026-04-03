@@ -1,0 +1,11 @@
+{
+  "name": "bmad-personal-workflow-claude",
+  "description": "BMAD personal workflow plugin for Claude Code with skills and role agents for solo development.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mournerliao"
+  },
+  "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "repository": "https://github.com/Mournerliao/bmad-workflow",
+  "license": "UNLICENSED"
+}
