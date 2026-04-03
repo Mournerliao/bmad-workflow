@@ -10,5 +10,8 @@ Thumbs.db
 __pycache__/
 *.pyc
 
+# Node dependencies
+node_modules/
+
 # Logs
 *.log

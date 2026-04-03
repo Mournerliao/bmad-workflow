@@ -72,6 +72,20 @@ The workflow is intentionally lightweight:
 - It does not model release governance or team coordination
 - It prefers short structured outputs over long formal documents
 
+## Git Conventions
+
+This repository uses a lightweight modern git commit setup:
+
+- `.gitattributes` enforces consistent line endings across platforms
+- `commitlint` enforces Conventional Commits
+- `husky` runs commit message validation through the `commit-msg` hook
+
+Examples:
+
+- `feat: add bugfix workflow variant`
+- `fix: correct plugin skill path`
+- `docs: clarify codex plugin usage`
+
 ## Future Direction
 
 Likely next steps:

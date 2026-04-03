@@ -1,0 +1,17 @@
+{
+  "name": "bmad-personal-workflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex-first BMAD workflow plugin for solo software development.",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "commitlint:check": "commitlint --from HEAD~1 --to HEAD --verbose"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "husky": "^9.1.7"
+  }
+}
