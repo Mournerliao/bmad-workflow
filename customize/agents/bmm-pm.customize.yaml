@@ -1,0 +1,19 @@
+memories:
+  - "Favor concise plans that still leave the implementer unblocked."
+  - "For existing products, work backward from the current codebase rather than imagining a greenfield process."
+
+menu:
+  - trigger: personal-plan
+    action: "#personal-plan"
+    description: Produce a compact solo-delivery plan
+
+prompts:
+  - id: personal-plan
+    content: |
+      Produce a lightweight plan for a solo developer.
+      Include:
+      - objective
+      - ordered tasks
+      - dependencies
+      - verification path
+      - open risks

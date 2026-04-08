@@ -1,111 +1,24 @@
 # Install The Codex Plugin
 
-This document describes how to install `bmad-personal-workflow` in a way that matches the current Codex plugin model as closely as possible.
+Codex is handled as a packaging target layered on top of an official BMAD installation.
 
-## What Is Officially Confirmed
+## Recommended Flow
 
-OpenAI's public Codex documentation currently confirms these points:
+From the repository root:
 
-- Codex plugins are the installable distribution unit for reusable workflows.
-- A plugin can package one or more skills, optional app integrations, and MCP server configurations.
-- Plugins complement local skills rather than replacing them.
-
-Official references:
-
-- [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan/)
-- [Codex docs overview](https://platform.openai.com/docs/codex)
-
-## What This Repository Uses
-
-OpenAI's public docs do not currently expose a more detailed packaging guide than the statements above.
-
-For the concrete on-disk layout, this repository follows the Codex plugin scaffolding conventions available in the current Codex environment:
-
-- plugin package directory: `plugins/<plugin-name>/`
-- manifest file: `plugins/<plugin-name>/.codex-plugin/plugin.json`
-- repo-local marketplace file: `.agents/plugins/marketplace.json`
-- marketplace plugin source path: `./plugins/<plugin-name>`
-
-This is the layout used by this repository:
-
-- plugin package: `plugins/bmad-personal-workflow-codex/`
-- manifest: `plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json`
-- marketplace entry: `.agents/plugins/marketplace.json`
-
-## Install Option 1: Use This Repository Directly
-
-Use this option when a user wants the plugin from this repo without copying files elsewhere.
-
-1. Clone the repository.
-2. Open or register the repo-local marketplace file:
-   `.agents/plugins/marketplace.json`
-3. Ensure the marketplace contains this plugin entry:
-
-```json
-{
-  "name": "bmad-personal-workflow-codex",
-  "source": {
-    "source": "local",
-    "path": "./plugins/bmad-personal-workflow-codex"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
-  "category": "Productivity"
-}
+```bash
+npx mourner-bmad-workflow install --target codex
 ```
 
-4. Install or enable the plugin from Codex if your Codex surface exposes the marketplace UI.
+That command will:
 
-## Install Option 2: Copy The Plugin To A Local Plugin Directory
+1. run official BMAD install with `claude-code` enabled as the compiled-skill source
+2. include this repo's personal custom content
+3. sync `.customize.yaml` overrides
+4. generate `plugins/mourner-bmad-workflow-codex/`
 
-Use this option when a user wants the plugin outside this repository.
+## Local Marketplace
 
-1. Copy `plugins/bmad-personal-workflow-codex/` to:
-   `~/plugins/bmad-personal-workflow-codex`
-2. Create or update:
-   `~/.agents/plugins/marketplace.json`
-3. Add a plugin entry pointing to:
-   `./plugins/bmad-personal-workflow-codex`
+This repository includes a repo-local marketplace file at `.agents/plugins/marketplace.json`.
 
-Example marketplace file:
-
-```json
-{
-  "name": "local-plugins",
-  "interface": {
-    "displayName": "Local Plugins"
-  },
-  "plugins": [
-    {
-      "name": "bmad-personal-workflow-codex",
-      "source": {
-        "source": "local",
-        "path": "./plugins/bmad-personal-workflow-codex"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
-}
-```
-
-## What To Share With Other Users
-
-For distribution, share:
-
-- the GitHub repository URL
-- the plugin directory path: `plugins/bmad-personal-workflow-codex`
-- this installation guide
-
-If you want a fully self-contained artifact, distribute the `plugins/bmad-personal-workflow-codex/` folder together with the marketplace snippet above.
-
-## Notes And Limits
-
-- This plugin is a folder-based distribution, not an npm package.
-- The public Codex docs confirm the plugin concept, but not a more detailed public registry/package publication workflow.
-- If OpenAI later publishes a formal plugin publishing guide or registry flow, this repository should be updated to match that official process.
+It points to `./plugins/mourner-bmad-workflow-codex`, which Codex can load as a local folder-based plugin.

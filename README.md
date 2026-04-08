@@ -1,110 +1,87 @@
-# BMAD Personal Workflow
+# mourner-bmad-workflow
 
-BMAD Personal Workflow is a platform-neutral personal development workflow inspired by BMAD.
+`mourner-bmad-workflow` is an installer wrapper and adapter layer for the official [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD).
 
-It currently ships with:
+This repository does not maintain a forked BMAD core anymore. It now exists to:
 
-- a Codex plugin distribution
-- a Claude Code adapter
-- a shared workflow core for future platform adapters
+- install official BMAD into a project
+- inject personal `.customize.yaml` overrides
+- attach a personal add-on module via `--custom-content`
+- generate local adapter outputs for Claude Code and Codex
 
-The workflow guides work through:
+The operating model is:
 
-`idea -> clarify -> plan -> build -> review`
+`official BMAD + personal customizations + platform adapters`
 
-## Current Features
+## What This Repository Owns
 
-This plugin currently provides four skill entry points:
+- `installer/`: one-click installation and regeneration flow
+- `customize/`: update-safe agent customizations copied into `_bmad/_config/agents/`
+- `custom-content/`: personal add-on module content
+- `adapters/`: Claude/Codex packaging rules
+- `plugins/`: generated or example local plugin outputs
 
-- `bmad-help`
-- `bmad-quick-dev`
-- `bmad-plan`
-- `bmad-review`
+## Quick Start
 
-The workflow is designed for:
+Install official BMAD plus Mourner's enhancements into the current project:
 
-- solo development
-- lightweight structured outputs
-- clear role handoffs across analysis, planning, build guidance, and review
+```bash
+npx mourner-bmad-workflow install
+```
 
-Current outputs include:
+Useful variants:
 
-- `brief`
-- `plan`
-- `solution-outline`
-- `build-checklist`
-- `review-report`
+- `npx mourner-bmad-workflow install --target claude`
+- `npx mourner-bmad-workflow install --target codex`
+- `npx mourner-bmad-workflow verify --dry-run`
 
-## Platform Artifacts
+Developer mode inside this repository still works:
 
-Codex installable package:
+- `npm run install:all`
+- `npm run generate:claude`
+- `npm run generate:codex`
 
-- [plugins/bmad-personal-workflow-codex](./plugins/bmad-personal-workflow-codex)
-- [plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json](./plugins/bmad-personal-workflow-codex/.codex-plugin/plugin.json)
-- [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
+## Personal Add-On Commands
 
-Claude plugin package:
+This repository adds lightweight personal commands without replacing official BMAD commands:
 
-- [plugins/bmad-personal-workflow-claude](./plugins/bmad-personal-workflow-claude)
+- `bmad-personal-project-context`
+- `bmad-personal-plan`
+- `bmad-personal-review`
 
-Claude plugin manifest:
+These are exposed through:
 
-- [plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json](./plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json)
+- [plugins/mourner-bmad-workflow-claude](/Users/asherliao/Projects/bmad-workflow/plugins/mourner-bmad-workflow-claude)
+- [plugins/mourner-bmad-workflow-codex](/Users/asherliao/Projects/bmad-workflow/plugins/mourner-bmad-workflow-codex)
 
-## Platform Guides
+## Publish
 
-- [Install for Codex](./docs/install-codex-plugin.md)
-- [Use with Claude Code](./docs/install-claude-plugin.md)
+Release checks:
 
-## Usage
+```bash
+npm run check:release
+npm run pack:release
+```
 
-Current workflow entry points:
+Dry-run a local release without publishing:
 
-- `bmad-help` for plugin orientation
-- `bmad-quick-dev` for the full personal workflow
-- `bmad-plan` for clarify + planning only
-- `bmad-review` for review, risk, and validation guidance
+```bash
+npm run release -- patch --no-publish
+```
 
-### Which Skill Should I Use?
+Publish:
 
-- `bmad-help`
-  Use this when you want to understand what the plugin does, what roles it uses, and which BMAD skill to start with.
+```bash
+npm run release:patch
+```
 
-- `bmad-quick-dev`
-  Use this when you want to take a feature, bugfix, or scoped change all the way through the personal workflow from idea to review.
+Full publishing guidance is in [docs/releasing.md](/Users/asherliao/Projects/bmad-workflow/docs/releasing.md).
 
-- `bmad-plan`
-  Use this when you want to clarify a request and produce a plan first, without going into build or review yet.
+## Documentation
 
-- `bmad-review`
-  Use this when you already have a plan, patch, or implementation and want to inspect risks, regressions, and testing gaps.
-
-## Scope
-
-This project currently focuses on:
-
-- Codex and Claude Code adapters
-- personal development workflows
-- compact, execution-oriented guidance
-
-## Workflow References
-
-The shared source of truth lives under:
-
-- [core](./core)
-
-Key references:
-
-- [quick-dev workflow](./core/workflows/quick-dev.md)
-- [role definitions](./core/roles)
-- [templates](./core/templates)
-- [global rules](./core/rules/global.md)
-
-## Development
-
-Contributor-focused setup notes are in:
-
-- [docs/development.md](./docs/development.md)
-- [docs/architecture.md](./docs/architecture.md)
-- [docs/codex-adapter.md](./docs/codex-adapter.md)
-- [docs/claude-adapter.md](./docs/claude-adapter.md)
+- [Architecture](/Users/asherliao/Projects/bmad-workflow/docs/architecture.md)
+- [Development](/Users/asherliao/Projects/bmad-workflow/docs/development.md)
+- [Claude adapter](/Users/asherliao/Projects/bmad-workflow/docs/claude-adapter.md)
+- [Codex adapter](/Users/asherliao/Projects/bmad-workflow/docs/codex-adapter.md)
+- [Install for Claude](/Users/asherliao/Projects/bmad-workflow/docs/install-claude-plugin.md)
+- [Install for Codex](/Users/asherliao/Projects/bmad-workflow/docs/install-codex-plugin.md)

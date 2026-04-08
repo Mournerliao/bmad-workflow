@@ -1,14 +1,14 @@
 {
-  "name": "mournerliao-local",
+  "name": "mourner-bmad-workflow-local",
   "interface": {
-    "displayName": "Mournerliao Local Plugins"
+    "displayName": "Mourner BMAD Workflow Local Plugins"
   },
   "plugins": [
     {
-      "name": "bmad-personal-workflow-codex",
+      "name": "mourner-bmad-workflow-codex",
       "source": {
         "source": "local",
-        "path": "./plugins/bmad-personal-workflow-codex"
+        "path": "./plugins/mourner-bmad-workflow-codex"
       },
       "policy": {
         "installation": "AVAILABLE",

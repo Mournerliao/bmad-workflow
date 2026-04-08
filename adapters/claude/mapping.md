@@ -1,25 +1,13 @@
 # Claude Mapping
 
-## Skills
+## Upstream Inputs
 
-- capability `help` -> skill `bmad-help`
-- capability `quick-dev` -> skill `bmad-quick-dev`
-- capability `plan` -> skill `bmad-plan`
-- capability `review` -> skill `bmad-review`
+- official BMAD Claude skills from `.claude/skills/`
+- personal add-on skill folders from `custom-content/modules/personal-workflow/skills/`
+- agent customizations from `customize/agents/`
 
-All four skills are manual workflow entry points and should use `disable-model-invocation: true`.
+## Current Personal Commands
 
-## Subagents
-
-- role `analyst` -> Claude subagent `analyst`
-- role `planner` -> Claude subagent `planner`
-- role `architect` -> Claude subagent `architect`
-- role `builder` -> Claude subagent `builder`
-- role `reviewer` -> Claude subagent `reviewer`
-
-## Orchestration Rules
-
-- `bmad-help` explains entry points and should not spawn subagents
-- `bmad-quick-dev` orchestrates `analyst -> planner -> architect -> builder -> reviewer`
-- `bmad-plan` orchestrates `analyst -> planner -> architect`
-- `bmad-review` centers `reviewer`
+- `bmad-personal-project-context`
+- `bmad-personal-plan`
+- `bmad-personal-review`

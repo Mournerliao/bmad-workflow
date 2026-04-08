@@ -1,37 +1,15 @@
 # Claude Adapter
 
-This adapter maps the platform-neutral BMAD core into Claude Code skills and subagents.
-
-## Host Surface
-
-- Claude Code skills
-- Claude Code subagents
-
-This adapter intentionally does not implement legacy slash-command wrappers.
-
-## Capability Mapping
-
-- `help` -> `bmad-help`
-- `quick-dev` -> `bmad-quick-dev`
-- `plan` -> `bmad-plan`
-- `review` -> `bmad-review`
-
-## Role Mapping
-
-Claude subagents map directly to BMAD roles:
-
-- `analyst`
-- `planner`
-- `architect`
-- `builder`
-- `reviewer`
+The Claude adapter packages official BMAD Claude skills together with this repository's personal add-on skills.
 
 ## Source Of Truth
 
-- `core/capabilities/`
-- `core/roles/`
-- `core/workflows/`
-- `core/templates/`
-- `core/rules/`
+- official BMAD Claude skills: `<install-dir>/.claude/skills/`
+- personal add-on skill templates: `custom-content/modules/personal-workflow/skills/`
+- update-safe customizations: `customize/agents/*.customize.yaml`
 
-The Claude distribution bundle in `plugins/bmad-personal-workflow-claude/` is a deliverable derived from this adapter and the shared core.
+## Adapter Responsibilities
+
+- preserve upstream BMAD command semantics
+- merge personal add-on skills beside upstream skills
+- provide a convenient local wrapper plugin in `plugins/mourner-bmad-workflow-claude/`

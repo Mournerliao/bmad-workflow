@@ -1,49 +1,42 @@
 # Architecture
 
-This repository is organized as a platform-neutral BMAD core with host-specific adapters and checked-in distribution artifacts.
+This repository is organized as an official-BMAD wrapper rather than a standalone workflow implementation.
 
 ## Layers
 
-### `core/`
+### `installer/`
 
-Shared source of truth for:
+Owns orchestration:
 
-- roles
-- workflows
-- templates
-- rules
-- capabilities
+- run official `npx bmad-method install`
+- inject personal custom content
+- sync `.customize.yaml`
+- regenerate Claude/Codex outputs
 
-This layer must remain host-neutral.
+### `customize/`
+
+Owns update-safe overrides copied into `_bmad/_config/agents/`.
+
+### `custom-content/`
+
+Owns the personal add-on module passed through `--custom-content`.
 
 ### `adapters/`
 
-Host-specific mappings that translate the core into a platform surface.
+Owns platform packaging rules only:
 
-Current adapters:
-
-- `adapters/codex/`
 - `adapters/claude/`
-
-Each adapter defines:
-
-- capability name to host entry name
-- role mapping to host agent model
-- orchestration guidance for that host
+- `adapters/codex/`
 
 ### `plugins/`
 
-Checked-in host artifacts derived from the shared core and adapter layers.
+Contains generated or example local-loadable plugin outputs:
 
-Current distributions:
-
-- `plugins/bmad-personal-workflow-codex/` as the Codex installable package
-- `plugins/bmad-personal-workflow-claude/` as the Claude installable plugin package
-
-These should be derived from `core/` plus the appropriate adapter.
+- `plugins/mourner-bmad-workflow-claude/`
+- `plugins/mourner-bmad-workflow-codex/`
 
 ## Architectural Rules
 
-- `core/` must not mention `.codex-plugin`, `.claude`, slash commands, or host-specific namespaces.
-- `adapters/` must consume `core/` and should not depend on each other.
-- `plugins/` are deliverables, not the single source of truth.
+- Do not add a new repo-local BMAD core layer.
+- Prefer `.customize.yaml` for behavior changes and `custom-content/` for new capabilities.
+- Keep Codex and Claude adapters thin and regeneration-friendly.

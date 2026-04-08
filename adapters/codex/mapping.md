@@ -1,28 +1,18 @@
 # Codex Mapping
 
-## Naming
+## Inputs
 
-- capability `help` -> skill `bmad-help`
-- capability `quick-dev` -> skill `bmad-quick-dev`
-- capability `plan` -> skill `bmad-plan`
-- capability `review` -> skill `bmad-review`
+- official BMAD Claude-compatible skill folders
+- personal add-on skill folders
 
-## Role Mapping
+## Adapter Rules
 
-Codex consumes BMAD roles as references and orchestration instructions inside skills.
+- copy official BMAD skills into the Codex plugin `skills/` directory
+- overlay personal skill folders afterward
+- keep personal commands on distinct names so upstream BMAD commands remain unshadowed
 
-- `analyst`
-- `planner`
-- `architect`
-- `builder`
-- `reviewer`
+## Current Personal Commands
 
-## Output Contract
-
-Codex skills should preserve these host-visible outputs:
-
-- `brief`
-- `plan`
-- `solution-outline`
-- `build-checklist`
-- `review-report`
+- `bmad-personal-project-context`
+- `bmad-personal-plan`
+- `bmad-personal-review`

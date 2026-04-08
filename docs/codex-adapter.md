@@ -1,25 +1,11 @@
 # Codex Adapter
 
-The Codex adapter maps BMAD capabilities to Codex skills and the Codex plugin package.
+Codex is handled as a packaging target layered on top of an official BMAD installation.
 
-## Current Surface
+## Flow
 
-- `bmad-help`
-- `bmad-quick-dev`
-- `bmad-plan`
-- `bmad-review`
-
-## Source Layout
-
-- adapter source: `adapters/codex/`
-- distribution package: `plugins/bmad-personal-workflow-codex/`
-
-## Packaging Notes
-
-The Codex package includes:
-
-- `.codex-plugin/plugin.json`
-- `skills/`
-- `references/core/`
-
-The package keeps a copy of the shared core under `references/core/` so it remains self-contained when distributed.
+1. Official BMAD installs with `claude-code` enabled.
+2. Upstream BMAD generates skills into `.claude/skills/`.
+3. This repository copies those skill folders into `plugins/mourner-bmad-workflow-codex/skills/`.
+4. Personal add-on skills are overlaid afterward.
+5. Codex loads the merged plugin through `.agents/plugins/marketplace.json`.

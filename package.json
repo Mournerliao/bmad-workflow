@@ -1,13 +1,52 @@
 {
-  "name": "bmad-personal-workflow",
+  "name": "mourner-bmad-workflow",
   "version": "0.1.0",
-  "private": true,
-  "description": "Codex-first BMAD workflow plugin for solo software development.",
-  "license": "UNLICENSED",
+  "description": "Official BMAD installer wrapper with Mourner customizations and Claude/Codex adapters.",
+  "license": "MIT",
+  "bin": {
+    "mourner-bmad-workflow": "./installer/index.js"
+  },
+  "files": [
+    "installer/",
+    "customize/",
+    "custom-content/",
+    "adapters/",
+    "plugins/",
+    ".agents/plugins/marketplace.json",
+    "README.md",
+    "LICENSE*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mournerliao/bmad-workflow.git"
+  },
+  "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "keywords": [
+    "bmad",
+    "workflow",
+    "installer",
+    "claude-code",
+    "codex"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "test -x node_modules/.bin/husky && node_modules/.bin/husky || true",
     "commitlint": "commitlint --edit",
-    "commitlint:check": "commitlint --from HEAD~1 --to HEAD --verbose"
+    "commitlint:check": "commitlint --from HEAD~1 --to HEAD --verbose",
+    "check:release": "node scripts/check-release.js",
+    "pack:release": "node scripts/pack-release.js",
+    "release": "node scripts/release.js",
+    "release:patch": "node scripts/release.js patch",
+    "release:minor": "node scripts/release.js minor",
+    "release:major": "node scripts/release.js major",
+    "install:claude": "node installer/index.js install --target claude --directory .",
+    "install:codex": "node installer/index.js install --target codex --directory .",
+    "install:all": "node installer/index.js install --target both --directory .",
+    "generate:claude": "node installer/index.js generate --target claude --directory .",
+    "generate:codex": "node installer/index.js generate --target codex --directory .",
+    "verify:dry-run": "node installer/index.js verify --target both --directory . --dry-run"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
