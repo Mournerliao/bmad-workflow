@@ -1,7 +1,7 @@
 {
   "name": "mourner-bmad-workflow-codex",
   "version": "0.1.0",
-  "description": "Codex packaging layer for official BMAD plus personal add-on skills.",
+  "description": "Codex plugin wrapper for official BMAD plus personal add-on skills.",
   "author": {
     "name": "Mournerliao",
     "email": "997749670@qq.com",

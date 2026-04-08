@@ -15,3 +15,8 @@ node_modules/
 
 # Logs
 *.log
+
+# Release artifacts
+mourner-bmad-workflow-*.tgz
+.npm-cache/
+.release-pack/

@@ -1,43 +1,12 @@
 # Claude Adapter
 
-The Claude adapter maps BMAD capabilities to Claude Code skills and subagents.
+The Claude adapter packages official BMAD Claude skills together with this repository's personal add-on skills.
 
-## Current Design Choices
+## Flow
 
-- skills-first adaptation
-- no slash-command compatibility layer
-- no Claude MCP integration in the first adaptation
+1. Official BMAD installs into the target directory.
+2. BMAD emits Claude skills into `.claude/skills/`.
+3. This repository syncs `customize/agents/*.customize.yaml` into `_bmad/_config/agents/`.
+4. The installer copies official and personal skills into `plugins/mourner-bmad-workflow-claude/skills/`.
 
-## Current Surface
-
-Skills:
-
-- `bmad-help`
-- `bmad-quick-dev`
-- `bmad-plan`
-- `bmad-review`
-
-Subagents:
-
-- `analyst`
-- `planner`
-- `architect`
-- `builder`
-- `reviewer`
-
-## Source Layout
-
-- adapter source: `adapters/claude/`
-- Claude plugin package: `plugins/bmad-personal-workflow-claude/`
-
-The plugin package includes a Claude manifest at:
-
-- `plugins/bmad-personal-workflow-claude/.claude-plugin/plugin.json`
-
-## Official Alignment
-
-This adapter follows Claude Code's current recommended direction:
-
-- use skills as the primary reusable workflow surface
-- use subagents for specialized role behavior
-- avoid building a legacy commands wrapper unless there is a concrete compatibility need
+The wrapper plugin is for local loading and sharing. Official BMAD remains the source of truth.

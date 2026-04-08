@@ -1,0 +1,11 @@
+{
+  "name": "mourner-bmad-workflow-claude",
+  "description": "Claude wrapper plugin for official BMAD plus personal add-on skills.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mournerliao"
+  },
+  "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "repository": "https://github.com/Mournerliao/bmad-workflow",
+  "license": "UNLICENSED"
+}

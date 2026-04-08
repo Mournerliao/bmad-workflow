@@ -1,5 +1,16 @@
 # Development
 
+## Repository Model
+
+This repository is now an installer-and-adapter project, not a standalone BMAD implementation.
+
+When adding new capability:
+
+- prefer `customize/` for agent behavior tweaks
+- prefer `custom-content/` for new personal add-ons
+- keep `adapters/` thin
+- avoid copying official BMAD prompts into the repo
+
 ## Git Conventions
 
 This repository uses a lightweight modern git commit setup:
@@ -22,14 +33,25 @@ Example commit messages:
 npm install
 ```
 
-2. Commit as usual. The `commit-msg` hook will validate the commit message format automatically.
+2. Run a dry-run installer check:
+
+```bash
+npm run verify:dry-run
+```
+
+3. Regenerate local adapter outputs if needed:
+
+```bash
+npm run generate:claude
+npm run generate:codex
+```
+
+4. Commit as usual. The `commit-msg` hook will validate the commit message format automatically.
 
 ## Package Layout
 
-The repository ships a folder-based Codex plugin package:
-
-- `plugins/bmad-personal-workflow-codex/`
-
-The repo-local marketplace entry is:
-
-- `.agents/plugins/marketplace.json`
+- `installer/`: orchestration CLI
+- `customize/`: `.customize.yaml` templates
+- `custom-content/`: personal add-on module
+- `plugins/`: generated/example plugin outputs
+- `.agents/plugins/marketplace.json`: repo-local Codex marketplace entry
