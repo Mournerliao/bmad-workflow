@@ -19,7 +19,7 @@ Owns update-safe overrides copied into `_bmad/_config/agents/`.
 
 ### `custom-content/`
 
-Owns the personal add-on module passed through `--custom-content`.
+Owns the add-on module passed through `--custom-content`.
 
 ### `adapters/`
 
@@ -38,5 +38,5 @@ Contains generated or example local-loadable plugin outputs:
 ## Architectural Rules
 
 - Do not add a new repo-local BMAD core layer.
-- Prefer `.customize.yaml` for behavior changes and `custom-content/` for new capabilities.
+- Prefer `.customize.yaml` for behavior changes and `custom-content/` for installation and packaging integration.
 - Keep Codex and Claude adapters thin and regeneration-friendly.

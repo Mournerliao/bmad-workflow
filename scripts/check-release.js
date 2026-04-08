@@ -38,7 +38,7 @@ function ensureNoLegacyNames() {
     "rg",
     [
       "-n",
-      "bmad-personal-workflow|plugins/bmad-personal-workflow|bmad-personal-workflow-codex|bmad-personal-workflow-claude",
+      "bmad-personal-workflow|plugins/bmad-personal-workflow|bmad-personal-workflow-codex|bmad-personal-workflow-claude|bmad-personal-",
       "README.md",
       ".agents/plugins/marketplace.json",
       "adapters",
@@ -71,8 +71,8 @@ function main() {
   if (pkg.license !== "MIT") {
     fail(`package license must be MIT, got ${pkg.license}`);
   }
-  if (!pkg.bin || pkg.bin["mourner-bmad-workflow"] !== "./installer/index.js") {
-    fail("package bin.mourner-bmad-workflow must point to ./installer/index.js");
+  if (!pkg.bin || pkg.bin["mourner-bmad-workflow"] !== "installer/index.js") {
+    fail("package bin.mourner-bmad-workflow must point to installer/index.js");
   }
 
   [
@@ -108,6 +108,20 @@ function main() {
   const helpOutput = runNode(["installer/index.js", "--help"]);
   if (!helpOutput.includes("mourner-bmad-workflow install")) {
     fail("CLI help output does not include install command");
+  }
+  if (!helpOutput.includes("--preset <minimal|full>")) {
+    fail("CLI help output does not include preset help");
+  }
+
+  const installerSource = fs.readFileSync(path.join(repoRoot, "installer", "index.js"), "utf8");
+  if (!installerSource.includes('"bmad-help"')) {
+    fail("installer is missing the default bmad-help preset entry");
+  }
+  if (!installerSource.includes('"bmad-code-review"')) {
+    fail("installer is missing the default bmad-code-review preset entry");
+  }
+  if (!installerSource.includes('"bmad-generate-project-context"')) {
+    fail("installer is missing the default bmad-generate-project-context preset entry");
   }
 
   ensureNoLegacyNames();

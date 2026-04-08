@@ -2,10 +2,10 @@
 
 This directory is passed to the official BMAD installer via `--custom-content`.
 
-Its goals are intentionally small:
+Its role is intentionally small:
 
-- add lightweight personal commands
-- bias BMAD toward existing-project work
+- provide an add-on packaging anchor for this distribution
 - keep customization update-safe
+- leave official BMAD command semantics intact
 
-The adapter generators also read the skill templates in `skills/` when building Claude and Codex plugin outputs.
+The installer now filters official BMAD skills at the packaging layer instead of shipping custom commands from this module.

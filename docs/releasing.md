@@ -12,6 +12,14 @@ or used directly with:
 npx mourner-bmad-workflow install
 ```
 
+By default, the generated Claude/Codex wrappers only expose:
+
+- `bmad-help`
+- `bmad-code-review`
+- `bmad-generate-project-context`
+
+Use `--preset full` to keep the full official BMAD command surface.
+
 ## Before First Publish
 
 Make sure:

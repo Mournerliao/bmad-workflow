@@ -7,7 +7,7 @@ This repository does not maintain a forked BMAD core anymore. It now exists to:
 - install official BMAD into a project
 - inject personal `.customize.yaml` overrides
 - attach a personal add-on module via `--custom-content`
-- generate local adapter outputs for Claude Code and Codex
+- generate local adapter outputs for Claude Code and Codex with a minimal official command set
 
 The operating model is:
 
@@ -33,6 +33,7 @@ Useful variants:
 
 - `npx mourner-bmad-workflow install --target claude`
 - `npx mourner-bmad-workflow install --target codex`
+- `npx mourner-bmad-workflow install --preset full`
 - `npx mourner-bmad-workflow verify --dry-run`
 
 Developer mode inside this repository still works:
@@ -41,13 +42,13 @@ Developer mode inside this repository still works:
 - `npm run generate:claude`
 - `npm run generate:codex`
 
-## Personal Add-On Commands
+## Default Exposed Commands
 
-This repository adds lightweight personal commands without replacing official BMAD commands:
+By default, this package only exposes a minimal set of official BMAD commands:
 
-- `bmad-personal-project-context`
-- `bmad-personal-plan`
-- `bmad-personal-review`
+- `bmad-help`
+- `bmad-code-review`
+- `bmad-generate-project-context`
 
 These are exposed through:
 

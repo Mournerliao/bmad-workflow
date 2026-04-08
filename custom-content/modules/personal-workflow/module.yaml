@@ -1,4 +1,4 @@
 name: mourner-bmad-workflow
 code: personal-workflow
 version: 0.1.0
-description: Personal add-on module for existing-project bootstrap and lightweight solo workflows.
+description: Add-on packaging module for mourner-bmad-workflow and official BMAD integration.

@@ -16,6 +16,12 @@ That command will:
 2. include this repo's personal custom content
 3. sync `.customize.yaml` overrides
 4. generate `plugins/mourner-bmad-workflow-codex/`
+5. expose only:
+   - `bmad-help`
+   - `bmad-code-review`
+   - `bmad-generate-project-context`
+
+Use `--preset full` if you want to keep all official generated commands.
 
 ## Local Marketplace
 

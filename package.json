@@ -4,7 +4,7 @@
   "description": "Official BMAD installer wrapper with Mourner customizations and Claude/Codex adapters.",
   "license": "MIT",
   "bin": {
-    "mourner-bmad-workflow": "./installer/index.js"
+    "mourner-bmad-workflow": "installer/index.js"
   },
   "files": [
     "installer/",

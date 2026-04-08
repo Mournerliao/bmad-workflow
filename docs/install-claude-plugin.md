@@ -17,6 +17,12 @@ That command will:
 3. include this repo's `custom-content/`
 4. sync `customize/agents/*.customize.yaml`
 5. regenerate `plugins/mourner-bmad-workflow-claude/`
+6. expose only:
+   - `bmad-help`
+   - `bmad-code-review`
+   - `bmad-generate-project-context`
+
+Use `--preset full` if you want to keep all official generated commands.
 
 ## Local Plugin Testing
 

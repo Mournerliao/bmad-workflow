@@ -3,16 +3,15 @@
 ## Inputs
 
 - official BMAD Claude-compatible skill folders
-- personal add-on skill folders
 
 ## Adapter Rules
 
 - copy official BMAD skills into the Codex plugin `skills/` directory
-- overlay personal skill folders afterward
-- keep personal commands on distinct names so upstream BMAD commands remain unshadowed
+- apply the selected preset as a whitelist at packaging time
+- keep the upstream `.claude/skills` installation untouched
 
-## Current Personal Commands
+## Default Preset
 
-- `bmad-personal-project-context`
-- `bmad-personal-plan`
-- `bmad-personal-review`
+- `bmad-help`
+- `bmad-code-review`
+- `bmad-generate-project-context`
