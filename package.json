@@ -20,6 +20,10 @@
     "url": "git+https://github.com/Mournerliao/bmad-workflow.git"
   },
   "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "keywords": [
     "bmad",
     "workflow",

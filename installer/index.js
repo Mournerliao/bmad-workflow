@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const { spawnSync } = require("child_process");
 
@@ -57,6 +58,7 @@ Options:
   --document-output-language <lang>
   --dry-run
   --debug
+  --skip-cursor-local-plugin   Do not copy the Cursor plugin to ~/.cursor/plugins/local/ (Cursor target only)
 `);
 }
 
@@ -76,10 +78,11 @@ function parseArgs(argv) {
     preset: "minimal",
     directory: process.cwd(),
     modules: "bmm",
-    action: "install",
+    action: "quick-update",
     dryRun: false,
     debug: false,
     skipInstall: false,
+    skipCursorLocalPlugin: false,
     outputFolder: "_bmad-output",
     userName: "",
     communicationLanguage: "",
@@ -99,6 +102,10 @@ function parseArgs(argv) {
     }
     if (arg === "--skip-install") {
       options.skipInstall = true;
+      continue;
+    }
+    if (arg === "--skip-cursor-local-plugin") {
+      options.skipCursorLocalPlugin = true;
       continue;
     }
 
@@ -381,6 +388,35 @@ function generateCursorPlugin(options) {
   });
 }
 
+function cursorUserLocalPluginPath() {
+  return path.join(os.homedir(), ".cursor", "plugins", "local", pluginNames.cursor);
+}
+
+function syncCursorPluginToUserLocal(options) {
+  if (options.skipCursorLocalPlugin) {
+    console.log("Skipping ~/.cursor/plugins/local sync (--skip-cursor-local-plugin).");
+    return;
+  }
+
+  const sourceDir = path.join(repoRoot, "plugins", pluginNames.cursor);
+  const destDir = cursorUserLocalPluginPath();
+
+  if (options.dryRun) {
+    console.log(`[dry-run] would sync Cursor plugin: ${sourceDir} -> ${destDir}`);
+    return;
+  }
+
+  if (!fs.existsSync(sourceDir)) {
+    console.warn(`warning: Cursor plugin output missing at ${sourceDir}; cannot sync to ~/.cursor/plugins/local`);
+    return;
+  }
+
+  console.log(`Installing Cursor plugin for local use: ${destDir}`);
+  removeDir(destDir);
+  ensureDir(path.dirname(destDir));
+  fs.cpSync(sourceDir, destDir, { recursive: true });
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
 
@@ -401,6 +437,7 @@ function main() {
   }
   if (options.target === "cursor" || options.target === "both") {
     generateCursorPlugin(options);
+    syncCursorPluginToUserLocal(options);
   }
 
   console.log("Done.");

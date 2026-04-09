@@ -70,3 +70,20 @@ npm run release:major
 - Release scripts do not push git automatically.
 - Release scripts do not create GitHub releases.
 - Published tarballs should be treated as build artifacts, not committed source files.
+
+### Publishing to npmjs.com
+
+If your machine uses a mirror registry (for example Tencent or npmmirror) for `npm install`, that **global `registry` does not affect publish**: this package sets `[publishConfig.registry](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#publishconfig)` to `https://registry.npmjs.org/`, and `[scripts/release.js](../scripts/release.js)` passes the same `--registry` to `npm publish`.
+
+Log in against the official registry before publishing:
+
+```bash
+npm login --registry https://registry.npmjs.org/
+```
+
+Verify who you are:
+
+```bash
+npm whoami --registry https://registry.npmjs.org/
+```
+
