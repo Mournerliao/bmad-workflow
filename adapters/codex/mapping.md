@@ -15,3 +15,5 @@
 - `bmad-help`
 - `bmad-code-review`
 - `bmad-generate-project-context`
+- `bmad-quick-dev`
+- `bmad-brainstorming`

@@ -1,0 +1,22 @@
+{
+  "name": "mourner-bmad-workflow-cursor",
+  "displayName": "Mourner BMAD Workflow",
+  "version": "0.1.0",
+  "description": "Cursor packaging layer for official BMAD plus personal add-on skills.",
+  "author": {
+    "name": "Mournerliao",
+    "email": "997749670@qq.com"
+  },
+  "homepage": "https://github.com/Mournerliao/bmad-workflow",
+  "repository": "https://github.com/Mournerliao/bmad-workflow",
+  "license": "UNLICENSED",
+  "keywords": [
+    "bmad",
+    "workflow",
+    "cursor",
+    "plugin",
+    "solo-development"
+  ],
+  "skills": "./skills/",
+  "commands": "./commands/"
+}

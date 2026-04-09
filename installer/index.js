@@ -5,25 +5,36 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const repoRoot = path.resolve(__dirname, "..");
-const supportedTargets = new Set(["claude", "codex", "both"]);
-const commands = new Set(["install", "generate", "verify"]);
+const supportedTargets = new Set(["claude", "codex", "cursor", "both"]);
+const cliCommands = new Set(["install", "generate", "verify"]);
+const defaultCommands = [
+  "bmad-help",
+  "bmad-code-review",
+  "bmad-generate-project-context",
+  "bmad-quick-dev",
+  "bmad-brainstorming",
+];
 const pluginNames = {
   claude: "mourner-bmad-workflow-claude",
   codex: "mourner-bmad-workflow-codex",
+  cursor: "mourner-bmad-workflow-cursor",
 };
 const presets = {
-  minimal: [
-    "bmad-help",
-    "bmad-code-review",
-    "bmad-generate-project-context",
-  ],
+  minimal: defaultCommands,
   full: null,
+};
+const cursorCommandDescriptions = {
+  "bmad-help": "Show the BMAD help workflow.",
+  "bmad-code-review": "Run the BMAD code review workflow.",
+  "bmad-generate-project-context": "Generate BMAD project context for the current codebase.",
+  "bmad-quick-dev": "Run the BMAD quick development workflow.",
+  "bmad-brainstorming": "Run the BMAD brainstorming and ideation workflow.",
 };
 
 function printHelp() {
   console.log(`mourner-bmad-workflow
 
-Official BMAD enhancement layer for personal customize content and Claude/Codex adapters.
+Official BMAD enhancement layer for personal customize content and Claude/Codex/Cursor adapters.
 
 Usage:
   mourner-bmad-workflow install [options]
@@ -32,11 +43,11 @@ Usage:
 
 Commands:
   install   Run official BMAD install, sync customize files, and generate adapter outputs
-  generate  Skip official install and regenerate local Claude/Codex wrapper outputs
+  generate  Skip official install and regenerate local Claude/Codex/Cursor wrapper outputs
   verify    Dry-run the install flow and print planned actions
 
 Options:
-  --target <claude|codex|both>
+  --target <claude|codex|cursor|both>
   --preset <minimal|full>
   --directory <path>
   --modules <csv>
@@ -55,7 +66,7 @@ function parseArgs(argv) {
     printHelp();
     process.exit(0);
   }
-  if (!commands.has(command)) {
+  if (!cliCommands.has(command)) {
     throw new Error(`Unknown command "${command}". Use install, generate, or verify.`);
   }
 
@@ -121,7 +132,7 @@ function parseArgs(argv) {
   }
 
   if (!supportedTargets.has(options.target)) {
-    throw new Error(`Unsupported target "${options.target}". Use claude, codex, or both.`);
+    throw new Error(`Unsupported target "${options.target}". Use claude, codex, cursor, or both.`);
   }
   if (!Object.prototype.hasOwnProperty.call(presets, options.preset)) {
     throw new Error(`Unsupported preset "${options.preset}". Use minimal or full.`);
@@ -151,6 +162,11 @@ function copyDir(source, destination) {
   }
   ensureDir(path.dirname(destination));
   fs.cpSync(source, destination, { recursive: true });
+}
+
+function writeTextFile(filePath, content) {
+  ensureDir(path.dirname(filePath));
+  fs.writeFileSync(filePath, content);
 }
 
 function listDirectories(baseDir) {
@@ -281,7 +297,7 @@ function mergeSkills({ officialSkillsDir, destinationDir, dryRun, presetName }) 
 
   if (dryRun) {
     selectedSkills.forEach((skill) => console.log(`[dry-run] selected skill ${skill}`));
-    return;
+    return selectedSkills;
   }
 
   removeDir(destinationDir);
@@ -289,6 +305,44 @@ function mergeSkills({ officialSkillsDir, destinationDir, dryRun, presetName }) 
 
   for (const skill of selectedSkills) {
     copyDir(path.join(officialSkillsDir, skill), path.join(destinationDir, skill));
+  }
+
+  return selectedSkills;
+}
+
+function buildCursorCommandContent(skillName) {
+  const description =
+    cursorCommandDescriptions[skillName] || `Run the ${skillName} BMAD workflow.`;
+
+  return `---
+name: ${skillName}
+description: ${description}
+---
+
+# /${skillName}
+
+Use the official BMAD \`${skillName}\` workflow from this plugin.
+
+Activate the \`${skillName}\` skill and follow its instructions to complete the user's request.
+`;
+}
+
+function generateCursorCommands({ destinationDir, dryRun, selectedSkills }) {
+  console.log(`Generating ${destinationDir} with ${selectedSkills.length} Cursor commands`);
+
+  if (dryRun) {
+    selectedSkills.forEach((skill) => console.log(`[dry-run] generate cursor command ${skill}`));
+    return;
+  }
+
+  removeDir(destinationDir);
+  ensureDir(destinationDir);
+
+  for (const skill of selectedSkills) {
+    writeTextFile(
+      path.join(destinationDir, `${skill}.md`),
+      buildCursorCommandContent(skill),
+    );
   }
 }
 
@@ -310,13 +364,29 @@ function generateCodexPlugin(options) {
   });
 }
 
+function generateCursorPlugin(options) {
+  const selectedSkills = mergeSkills({
+    officialSkillsDir: path.join(options.directory, ".claude", "skills"),
+    destinationDir: path.join(repoRoot, "plugins", pluginNames.cursor, "skills"),
+    dryRun: options.dryRun,
+    presetName: options.preset,
+  });
+
+  generateCursorCommands({
+    destinationDir: path.join(repoRoot, "plugins", pluginNames.cursor, "commands"),
+    dryRun: options.dryRun,
+    selectedSkills,
+  });
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2));
 
   if (!options.skipInstall) {
     runCommand("npx", buildInstallArgs(options, options.action), options.dryRun);
     syncCustomize(options);
-    runCommand("npx", buildInstallArgs(options, "compile-agents"), options.dryRun);
+    // BMAD v6 recompiles tool output through update rather than the removed compile-agents action.
+    runCommand("npx", buildInstallArgs(options, "update"), options.dryRun);
   } else {
     console.log("Skipping official BMAD install; generating adapter outputs only.");
   }
@@ -326,6 +396,9 @@ function main() {
   }
   if (options.target === "codex" || options.target === "both") {
     generateCodexPlugin(options);
+  }
+  if (options.target === "cursor" || options.target === "both") {
+    generateCursorPlugin(options);
   }
 
   console.log("Done.");

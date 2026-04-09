@@ -83,12 +83,21 @@ function main() {
     "custom-content/modules/personal-workflow/module.yaml",
     "plugins/mourner-bmad-workflow-claude/.claude-plugin/plugin.json",
     "plugins/mourner-bmad-workflow-codex/.codex-plugin/plugin.json",
+    "plugins/mourner-bmad-workflow-cursor/.cursor-plugin/plugin.json",
+    "plugins/mourner-bmad-workflow-cursor/commands/bmad-help.md",
+    "plugins/mourner-bmad-workflow-cursor/commands/bmad-code-review.md",
+    "plugins/mourner-bmad-workflow-cursor/commands/bmad-generate-project-context.md",
+    "plugins/mourner-bmad-workflow-cursor/commands/bmad-quick-dev.md",
+    "plugins/mourner-bmad-workflow-cursor/commands/bmad-brainstorming.md",
     ".agents/plugins/marketplace.json",
+    "docs/cursor-adapter.md",
+    "docs/install-cursor-plugin.md",
     "docs/releasing.md",
   ].forEach(assertExists);
 
   const claudePlugin = readJson("plugins/mourner-bmad-workflow-claude/.claude-plugin/plugin.json");
   const codexPlugin = readJson("plugins/mourner-bmad-workflow-codex/.codex-plugin/plugin.json");
+  const cursorPlugin = readJson("plugins/mourner-bmad-workflow-cursor/.cursor-plugin/plugin.json");
   const marketplace = readJson(".agents/plugins/marketplace.json");
 
   if (claudePlugin.name !== "mourner-bmad-workflow-claude") {
@@ -96,6 +105,9 @@ function main() {
   }
   if (codexPlugin.name !== "mourner-bmad-workflow-codex") {
     fail(`unexpected Codex plugin name: ${codexPlugin.name}`);
+  }
+  if (cursorPlugin.name !== "mourner-bmad-workflow-cursor") {
+    fail(`unexpected Cursor plugin name: ${cursorPlugin.name}`);
   }
   const marketPlugin = marketplace.plugins && marketplace.plugins[0];
   if (!marketPlugin || marketPlugin.name !== "mourner-bmad-workflow-codex") {
@@ -112,6 +124,16 @@ function main() {
   if (!helpOutput.includes("--preset <minimal|full>")) {
     fail("CLI help output does not include preset help");
   }
+  if (!helpOutput.includes("--target <claude|codex|cursor|both>")) {
+    fail("CLI help output does not include cursor target help");
+  }
+
+  if (pkg.scripts["install:cursor"] !== "node installer/index.js install --target cursor --directory .") {
+    fail("package script install:cursor is missing or incorrect");
+  }
+  if (pkg.scripts["generate:cursor"] !== "node installer/index.js generate --target cursor --directory .") {
+    fail("package script generate:cursor is missing or incorrect");
+  }
 
   const installerSource = fs.readFileSync(path.join(repoRoot, "installer", "index.js"), "utf8");
   if (!installerSource.includes('"bmad-help"')) {
@@ -122,6 +144,12 @@ function main() {
   }
   if (!installerSource.includes('"bmad-generate-project-context"')) {
     fail("installer is missing the default bmad-generate-project-context preset entry");
+  }
+  if (!installerSource.includes('"bmad-quick-dev"')) {
+    fail("installer is missing the default bmad-quick-dev preset entry");
+  }
+  if (!installerSource.includes('"bmad-brainstorming"')) {
+    fail("installer is missing the default bmad-brainstorming preset entry");
   }
 
   ensureNoLegacyNames();
