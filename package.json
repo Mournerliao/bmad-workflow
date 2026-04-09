@@ -12,7 +12,6 @@
     "custom-content/",
     "adapters/",
     "plugins/",
-    ".agents/plugins/marketplace.json",
     "README.md",
     "LICENSE*"
   ],

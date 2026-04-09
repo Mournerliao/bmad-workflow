@@ -25,4 +25,6 @@ _bmad/
 _bmad-output/
 
 .claude/
+
+# Codex local plugin registry (copy from adapters/codex/marketplace.local.example.json)
 .agents/

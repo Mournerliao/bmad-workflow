@@ -9,3 +9,4 @@ Because BMAD does not currently expose a native Codex tool target, this adapter 
 - official BMAD Claude skills: `<install-dir>/.claude/skills/`
 - personal add-on skill templates: `custom-content/modules/personal-workflow/skills/`
 - Codex plugin manifest template: `adapters/codex/plugin.json`
+- Codex local marketplace template (copy to `.agents/plugins/marketplace.json`): `adapters/codex/marketplace.local.example.json`

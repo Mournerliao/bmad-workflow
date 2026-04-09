@@ -40,7 +40,6 @@ function ensureNoLegacyNames() {
       "-n",
       "bmad-personal-workflow|plugins/bmad-personal-workflow|bmad-personal-workflow-codex|bmad-personal-workflow-claude|bmad-personal-",
       "README.md",
-      ".agents/plugins/marketplace.json",
       "adapters",
       "docs",
       "plugins",
@@ -89,7 +88,7 @@ function main() {
     "plugins/mourner-bmad-workflow-cursor/commands/bmad-generate-project-context.md",
     "plugins/mourner-bmad-workflow-cursor/commands/bmad-quick-dev.md",
     "plugins/mourner-bmad-workflow-cursor/commands/bmad-brainstorming.md",
-    ".agents/plugins/marketplace.json",
+    "adapters/codex/marketplace.local.example.json",
     "docs/cursor-adapter.md",
     "docs/install-cursor-plugin.md",
     "docs/releasing.md",
@@ -98,7 +97,6 @@ function main() {
   const claudePlugin = readJson("plugins/mourner-bmad-workflow-claude/.claude-plugin/plugin.json");
   const codexPlugin = readJson("plugins/mourner-bmad-workflow-codex/.codex-plugin/plugin.json");
   const cursorPlugin = readJson("plugins/mourner-bmad-workflow-cursor/.cursor-plugin/plugin.json");
-  const marketplace = readJson(".agents/plugins/marketplace.json");
 
   if (claudePlugin.name !== "mourner-bmad-workflow-claude") {
     fail(`unexpected Claude plugin name: ${claudePlugin.name}`);
@@ -109,12 +107,14 @@ function main() {
   if (cursorPlugin.name !== "mourner-bmad-workflow-cursor") {
     fail(`unexpected Cursor plugin name: ${cursorPlugin.name}`);
   }
-  const marketPlugin = marketplace.plugins && marketplace.plugins[0];
-  if (!marketPlugin || marketPlugin.name !== "mourner-bmad-workflow-codex") {
-    fail("marketplace must expose mourner-bmad-workflow-codex");
+
+  const marketplaceExample = readJson("adapters/codex/marketplace.local.example.json");
+  const examplePlugin = marketplaceExample.plugins && marketplaceExample.plugins[0];
+  if (!examplePlugin || examplePlugin.name !== "mourner-bmad-workflow-codex") {
+    fail("adapters/codex/marketplace.local.example.json must list mourner-bmad-workflow-codex");
   }
-  if (marketPlugin.source.path !== "./plugins/mourner-bmad-workflow-codex") {
-    fail(`unexpected marketplace path: ${marketPlugin.source.path}`);
+  if (examplePlugin.source.path !== "./plugins/mourner-bmad-workflow-codex") {
+    fail("unexpected plugin path in marketplace.local.example.json");
   }
 
   const helpOutput = runNode(["installer/index.js", "--help"]);

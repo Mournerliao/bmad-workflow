@@ -27,6 +27,7 @@ Use `--preset full` if you want to keep all official generated commands.
 
 ## Local Marketplace
 
-This repository includes a repo-local marketplace file at `.agents/plugins/marketplace.json`.
+Codex can load this plugin via a **local** marketplace file that is **not** committed (`.agents/` is gitignored).
 
-It points to `./plugins/mourner-bmad-workflow-codex`, which Codex can load as a local folder-based plugin.
+1. Copy [`adapters/codex/marketplace.local.example.json`](../adapters/codex/marketplace.local.example.json) to `.agents/plugins/marketplace.json` inside your project (create the folders if needed).
+2. Adjust `source.path` if your plugin directory differs from `./plugins/mourner-bmad-workflow-codex`.
