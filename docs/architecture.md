@@ -11,7 +11,7 @@ Owns orchestration:
 - run official `npx bmad-method install`
 - inject personal custom content
 - sync `.customize.yaml`
-- regenerate Claude/Codex outputs
+- regenerate Claude/Codex/Cursor outputs
 
 ### `customize/`
 
@@ -27,6 +27,7 @@ Owns platform packaging rules only:
 
 - `adapters/claude/`
 - `adapters/codex/`
+- `adapters/cursor/`
 
 ### `plugins/`
 
@@ -34,9 +35,10 @@ Contains generated or example local-loadable plugin outputs:
 
 - `plugins/mourner-bmad-workflow-claude/`
 - `plugins/mourner-bmad-workflow-codex/`
+- `plugins/mourner-bmad-workflow-cursor/`
 
 ## Architectural Rules
 
 - Do not add a new repo-local BMAD core layer.
 - Prefer `.customize.yaml` for behavior changes and `custom-content/` for installation and packaging integration.
-- Keep Codex and Claude adapters thin and regeneration-friendly.
+- Keep Claude, Codex, and Cursor adapters thin and regeneration-friendly.

@@ -5,6 +5,8 @@ description: Run the BMAD code review workflow.
 
 # /bmad-code-review
 
-Use the official BMAD `bmad-code-review` workflow from this plugin.
+Use the official BMAD `bmad-code-review` workflow bundled in this plugin.
 
-Activate the `bmad-code-review` skill and follow its instructions to complete the user's request.
+Open `skills/bmad-code-review/SKILL.md` (relative to this plugin root) and follow it, including any linked step files under `skills/bmad-code-review/`, until the user's request is complete.
+
+Do not rely on a separate "skill" activation: the workflow content is only in those files.

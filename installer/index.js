@@ -321,9 +321,11 @@ description: ${description}
 
 # /${skillName}
 
-Use the official BMAD \`${skillName}\` workflow from this plugin.
+Use the official BMAD \`${skillName}\` workflow bundled in this plugin.
 
-Activate the \`${skillName}\` skill and follow its instructions to complete the user's request.
+Open \`skills/${skillName}/SKILL.md\` (relative to this plugin root) and follow it, including any linked step files under \`skills/${skillName}/\`, until the user's request is complete.
+
+Do not rely on a separate "skill" activation: the workflow content is only in those files.
 `;
 }
 

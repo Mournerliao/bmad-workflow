@@ -2,8 +2,10 @@
 
 This folder is the generated Cursor plugin wrapper for:
 
-- official BMAD skills compiled via Claude output
-- personal add-on skills from this repository
+- official BMAD workflows (files under `skills/`, used when you run `/bmad-*` commands)
+- personal add-on content from this repository
+
+The plugin manifest registers **commands** only, so Cursor’s plugin UI does not list the same items twice under Skills and Commands.
 
 Regenerate it with:
 

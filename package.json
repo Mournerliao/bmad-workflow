@@ -1,7 +1,7 @@
 {
   "name": "mourner-bmad-workflow",
   "version": "0.1.1",
-  "description": "Official BMAD installer wrapper with Mourner customizations and Claude/Codex adapters.",
+  "description": "Official BMAD installer wrapper with Mourner customizations and Claude/Codex/Cursor adapters.",
   "license": "MIT",
   "bin": {
     "mourner-bmad-workflow": "installer/index.js"
@@ -26,7 +26,8 @@
     "workflow",
     "installer",
     "claude-code",
-    "codex"
+    "codex",
+    "cursor"
   ],
   "engines": {
     "node": ">=18"
@@ -43,9 +44,11 @@
     "release:major": "node scripts/release.js major",
     "install:claude": "node installer/index.js install --target claude --directory .",
     "install:codex": "node installer/index.js install --target codex --directory .",
+    "install:cursor": "node installer/index.js install --target cursor --directory .",
     "install:all": "node installer/index.js install --target both --directory .",
     "generate:claude": "node installer/index.js generate --target claude --directory .",
     "generate:codex": "node installer/index.js generate --target codex --directory .",
+    "generate:cursor": "node installer/index.js generate --target cursor --directory .",
     "verify:dry-run": "node installer/index.js verify --target both --directory . --dry-run"
   },
   "devDependencies": {

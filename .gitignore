@@ -20,3 +20,9 @@ node_modules/
 mourner-bmad-workflow-*.tgz
 .npm-cache/
 .release-pack/
+
+_bmad/
+_bmad-output/
+
+.claude/
+.agents/

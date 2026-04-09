@@ -44,6 +44,7 @@ npm run verify:dry-run
 ```bash
 npm run generate:claude
 npm run generate:codex
+npm run generate:cursor
 ```
 
 4. Commit as usual. The `commit-msg` hook will validate the commit message format automatically.
@@ -55,3 +56,4 @@ npm run generate:codex
 - `custom-content/`: personal add-on module
 - `plugins/`: generated/example plugin outputs
 - `.agents/plugins/marketplace.json`: repo-local Codex marketplace entry
+- `plugins/mourner-bmad-workflow-cursor/`: repo-local Cursor plugin output
