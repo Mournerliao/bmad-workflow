@@ -1,6 +1,6 @@
 {
   "name": "mourner-bmad-workflow",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Official BMAD installer wrapper with Mourner customizations and Claude/Codex/Cursor adapters.",
   "license": "MIT",
   "bin": {
