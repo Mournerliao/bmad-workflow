@@ -13,6 +13,16 @@ __pycache__/
 # Node dependencies
 node_modules/
 
+# Environment (secrets)
+.env
+.env.*
+!.env.example
+
+# Build and test output
+coverage/
+dist/
+build/
+
 # Logs
 *.log
 
