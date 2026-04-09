@@ -22,7 +22,6 @@ mourner-bmad-workflow-*.tgz
 .release-pack/
 
 _bmad/
-_bmad-output/
 
 .claude/
 
