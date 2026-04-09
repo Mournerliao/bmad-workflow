@@ -127,6 +127,9 @@ function main() {
   if (!helpOutput.includes("--target <claude|codex|cursor|both>")) {
     fail("CLI help output does not include cursor target help");
   }
+  if (!helpOutput.includes("--skip-cursor-local-plugin")) {
+    fail("CLI help output does not include skip-cursor-local-plugin");
+  }
 
   if (pkg.scripts["install:cursor"] !== "node installer/index.js install --target cursor --directory .") {
     fail("package script install:cursor is missing or incorrect");
@@ -150,6 +153,9 @@ function main() {
   }
   if (!installerSource.includes('"bmad-brainstorming"')) {
     fail("installer is missing the default bmad-brainstorming preset entry");
+  }
+  if (!installerSource.includes("syncCursorPluginToUserLocal")) {
+    fail("installer is missing Cursor ~/.cursor/plugins/local sync");
   }
 
   ensureNoLegacyNames();

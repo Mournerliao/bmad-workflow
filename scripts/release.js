@@ -31,7 +31,14 @@ function main() {
     return;
   }
 
-  run("npm", ["publish", "--access", "public"]);
+  // Always publish to the official npm registry (ignore user/global mirror registry).
+  run("npm", [
+    "publish",
+    "--access",
+    "public",
+    "--registry",
+    "https://registry.npmjs.org/",
+  ]);
 }
 
 main();
