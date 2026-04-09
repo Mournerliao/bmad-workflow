@@ -15,7 +15,7 @@ That command will:
 1. run official BMAD install with `claude-code` enabled as the compiled-skill source
 2. include this repo's personal custom content
 3. sync `.customize.yaml` overrides
-4. generate `plugins/mourner-bmad-workflow-cursor/skills/`
+4. generate `plugins/mourner-bmad-workflow-cursor/workflow/`
 5. generate `plugins/mourner-bmad-workflow-cursor/commands/`
 6. expose at minimum:
    - `bmad-help`

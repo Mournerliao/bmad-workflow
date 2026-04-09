@@ -20,6 +20,7 @@ const pluginNames = {
   codex: "mourner-bmad-workflow-codex",
   cursor: "mourner-bmad-workflow-cursor",
 };
+const cursorPluginWorkflowDir = "workflow";
 const presets = {
   minimal: defaultCommands,
   full: null,
@@ -330,7 +331,7 @@ description: ${description}
 
 Use the official BMAD \`${skillName}\` workflow bundled in this plugin.
 
-Open \`skills/${skillName}/SKILL.md\` (relative to this plugin root) and follow it, including any linked step files under \`skills/${skillName}/\`, until the user's request is complete.
+Open \`workflow/${skillName}/SKILL.md\` (relative to this plugin root) and follow it, including any linked step files under \`workflow/${skillName}/\`, until the user's request is complete.
 
 Do not rely on a separate "skill" activation: the workflow content is only in those files.
 `;
@@ -374,9 +375,14 @@ function generateCodexPlugin(options) {
 }
 
 function generateCursorPlugin(options) {
+  const pluginBase = path.join(repoRoot, "plugins", pluginNames.cursor);
+  if (!options.dryRun) {
+    removeDir(path.join(pluginBase, "skills"));
+  }
+
   const selectedSkills = mergeSkills({
     officialSkillsDir: path.join(options.directory, ".claude", "skills"),
-    destinationDir: path.join(repoRoot, "plugins", pluginNames.cursor, "skills"),
+    destinationDir: path.join(pluginBase, cursorPluginWorkflowDir),
     dryRun: options.dryRun,
     presetName: options.preset,
   });
