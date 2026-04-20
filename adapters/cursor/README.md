@@ -11,6 +11,6 @@ The Cursor adapter wraps official BMAD output into a local Cursor plugin.
 ## Adapter Responsibilities
 
 - preserve upstream BMAD command semantics
-- copy selected BMAD skills into the Cursor plugin `workflow/` directory
-- generate Cursor slash commands in `commands/` for each exposed skill
+- copy selected BMAD skills into the Cursor plugin `skills/` directory
+- expose Cursor Agent Skills directly through `SKILL.md`
 - keep the upstream `.claude/skills` installation untouched

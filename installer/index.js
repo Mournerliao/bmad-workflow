@@ -7,6 +7,7 @@ const { spawnSync } = require("child_process");
 
 const repoRoot = path.resolve(__dirname, "..");
 const supportedTargets = new Set(["claude", "codex", "cursor", "both"]);
+const supportedScopes = new Set(["project", "global"]);
 const cliCommands = new Set(["install", "generate", "verify"]);
 const defaultCommands = [
   "bmad-help",
@@ -20,17 +21,23 @@ const pluginNames = {
   codex: "mourner-bmad-workflow-codex",
   cursor: "mourner-bmad-workflow-cursor",
 };
-const cursorPluginWorkflowDir = "workflow";
 const presets = {
   minimal: defaultCommands,
   full: null,
 };
-const cursorCommandDescriptions = {
-  "bmad-help": "Show the BMAD help workflow.",
-  "bmad-code-review": "Run the BMAD code review workflow.",
-  "bmad-generate-project-context": "Generate BMAD project context for the current codebase.",
-  "bmad-quick-dev": "Run the BMAD quick development workflow.",
-  "bmad-brainstorming": "Run the BMAD brainstorming and ideation workflow.",
+const skillInstallRoots = {
+  claude: {
+    project: (options) => path.join(options.directory, ".claude", "skills"),
+    global: () => path.join(os.homedir(), ".claude", "skills"),
+  },
+  codex: {
+    project: (options) => path.join(options.directory, ".agents", "skills"),
+    global: () => path.join(os.homedir(), ".agents", "skills"),
+  },
+  cursor: {
+    project: (options) => path.join(options.directory, ".cursor", "skills"),
+    global: () => path.join(os.homedir(), ".cursor", "skills"),
+  },
 };
 
 function printHelp() {
@@ -50,6 +57,7 @@ Commands:
 
 Options:
   --target <claude|codex|cursor|both>
+  --scope <project|global>     Install skills to project or global locations (install/verify only)
   --preset <minimal|full>
   --directory <path>
   --modules <csv>
@@ -59,7 +67,7 @@ Options:
   --document-output-language <lang>
   --dry-run
   --debug
-  --skip-cursor-local-plugin   Do not copy the Cursor plugin to ~/.cursor/plugins/local/ (Cursor target only)
+  --skip-cursor-local-plugin   Deprecated; Cursor now installs skills directly
 `);
 }
 
@@ -76,6 +84,7 @@ function parseArgs(argv) {
   const options = {
     command,
     target: "both",
+    scope: "",
     preset: "minimal",
     directory: process.cwd(),
     modules: "bmm",
@@ -117,6 +126,8 @@ function parseArgs(argv) {
 
     if (arg === "--target") {
       options.target = next;
+    } else if (arg === "--scope") {
+      options.scope = next;
     } else if (arg === "--preset") {
       options.preset = next;
     } else if (arg === "--directory") {
@@ -145,12 +156,18 @@ function parseArgs(argv) {
   if (!Object.prototype.hasOwnProperty.call(presets, options.preset)) {
     throw new Error(`Unsupported preset "${options.preset}". Use minimal or full.`);
   }
+  if (options.scope && !supportedScopes.has(options.scope)) {
+    throw new Error(`Unsupported scope "${options.scope}". Use project or global.`);
+  }
 
   if (options.command === "generate") {
     options.skipInstall = true;
   }
   if (options.command === "verify") {
     options.dryRun = true;
+    if (!options.scope) {
+      options.scope = "project";
+    }
   }
 
   return options;
@@ -172,9 +189,38 @@ function copyDir(source, destination) {
   fs.cpSync(source, destination, { recursive: true });
 }
 
-function writeTextFile(filePath, content) {
-  ensureDir(path.dirname(filePath));
-  fs.writeFileSync(filePath, content);
+function readLine(prompt) {
+  const readline = require("readline");
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question(prompt, (answer) => {
+      rl.close();
+      resolve(answer.trim());
+    });
+  });
+}
+
+async function promptInstallScope(options) {
+  if (options.scope || options.command !== "install") {
+    return;
+  }
+
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    throw new Error(
+      "Install scope is required in non-interactive environments. Use --scope project or --scope global.",
+    );
+  }
+
+  const answer = await readLine("Install skills at project or global scope? [project/global] (project): ");
+  const scope = answer || "project";
+  if (!supportedScopes.has(scope)) {
+    throw new Error(`Unsupported scope "${scope}". Use project or global.`);
+  }
+  options.scope = scope;
 }
 
 function listDirectories(baseDir) {
@@ -260,13 +306,16 @@ function syncCustomize(options) {
   }
 }
 
-function filterSkills(officialSkills, presetName) {
+function filterSkills(officialSkills, presetName, allowMissing) {
   const allowList = presets[presetName];
   if (!allowList) {
     return officialSkills;
   }
 
   if (officialSkills.length === 0) {
+    if (!allowMissing) {
+      throw new Error("No upstream skills were found. Run install first or point --directory at a BMAD installation.");
+    }
     console.warn("warning: no upstream skills were found; skipping preset enforcement during dry generation");
     return allowList;
   }
@@ -297,7 +346,7 @@ function filterSkills(officialSkills, presetName) {
 
 function mergeSkills({ officialSkillsDir, destinationDir, dryRun, presetName }) {
   const officialSkills = listDirectories(officialSkillsDir);
-  const selectedSkills = filterSkills(officialSkills, presetName);
+  const selectedSkills = filterSkills(officialSkills, presetName, dryRun);
 
   console.log(
     `Generating ${destinationDir} with ${selectedSkills.length} selected official skills (preset: ${presetName})`,
@@ -318,46 +367,8 @@ function mergeSkills({ officialSkillsDir, destinationDir, dryRun, presetName }) 
   return selectedSkills;
 }
 
-function buildCursorCommandContent(skillName) {
-  const description =
-    cursorCommandDescriptions[skillName] || `Run the ${skillName} BMAD workflow.`;
-
-  return `---
-name: ${skillName}
-description: ${description}
----
-
-# /${skillName}
-
-Use the official BMAD \`${skillName}\` workflow bundled in this plugin.
-
-Open \`workflow/${skillName}/SKILL.md\` (relative to this plugin root) and follow it, including any linked step files under \`workflow/${skillName}/\`, until the user's request is complete.
-
-Do not rely on a separate "skill" activation: the workflow content is only in those files.
-`;
-}
-
-function generateCursorCommands({ destinationDir, dryRun, selectedSkills }) {
-  console.log(`Generating ${destinationDir} with ${selectedSkills.length} Cursor commands`);
-
-  if (dryRun) {
-    selectedSkills.forEach((skill) => console.log(`[dry-run] generate cursor command ${skill}`));
-    return;
-  }
-
-  removeDir(destinationDir);
-  ensureDir(destinationDir);
-
-  for (const skill of selectedSkills) {
-    writeTextFile(
-      path.join(destinationDir, `${skill}.md`),
-      buildCursorCommandContent(skill),
-    );
-  }
-}
-
 function generateClaudePlugin(options) {
-  mergeSkills({
+  return mergeSkills({
     officialSkillsDir: path.join(options.directory, ".claude", "skills"),
     destinationDir: path.join(repoRoot, "plugins", pluginNames.claude, "skills"),
     dryRun: options.dryRun,
@@ -366,7 +377,7 @@ function generateClaudePlugin(options) {
 }
 
 function generateCodexPlugin(options) {
-  mergeSkills({
+  return mergeSkills({
     officialSkillsDir: path.join(options.directory, ".claude", "skills"),
     destinationDir: path.join(repoRoot, "plugins", pluginNames.codex, "skills"),
     dryRun: options.dryRun,
@@ -377,54 +388,95 @@ function generateCodexPlugin(options) {
 function generateCursorPlugin(options) {
   const pluginBase = path.join(repoRoot, "plugins", pluginNames.cursor);
   if (!options.dryRun) {
-    removeDir(path.join(pluginBase, "skills"));
+    removeDir(path.join(pluginBase, "commands"));
+    removeDir(path.join(pluginBase, "workflow"));
   }
 
-  const selectedSkills = mergeSkills({
+  return mergeSkills({
     officialSkillsDir: path.join(options.directory, ".claude", "skills"),
-    destinationDir: path.join(pluginBase, cursorPluginWorkflowDir),
+    destinationDir: path.join(pluginBase, "skills"),
     dryRun: options.dryRun,
     presetName: options.preset,
   });
-
-  generateCursorCommands({
-    destinationDir: path.join(repoRoot, "plugins", pluginNames.cursor, "commands"),
-    dryRun: options.dryRun,
-    selectedSkills,
-  });
 }
 
-function cursorUserLocalPluginPath() {
-  return path.join(os.homedir(), ".cursor", "plugins", "local", pluginNames.cursor);
+function targetsForOption(target) {
+  if (target === "both") {
+    return ["claude", "codex", "cursor"];
+  }
+  return [target];
 }
 
-function syncCursorPluginToUserLocal(options) {
-  if (options.skipCursorLocalPlugin) {
-    console.log("Skipping ~/.cursor/plugins/local sync (--skip-cursor-local-plugin).");
+function resolveSkillInstallDestinations(options, selectedSkillsByTarget) {
+  const destinations = [];
+  for (const target of targetsForOption(options.target)) {
+    const selectedSkills = selectedSkillsByTarget[target] || [];
+    if (selectedSkills.length === 0) {
+      continue;
+    }
+    const destinationRoot = skillInstallRoots[target][options.scope](options);
+    destinations.push({
+      target,
+      destinationRoot,
+      selectedSkills,
+      sourceDir: path.join(repoRoot, "plugins", pluginNames[target], "skills"),
+    });
+  }
+  return destinations;
+}
+
+async function confirmInstallPlan(destinations, options) {
+  console.log(`Skill install scope: ${options.scope}`);
+  for (const destination of destinations) {
+    console.log(
+      `Will install ${destination.selectedSkills.length} ${destination.target} skills to ${destination.destinationRoot}`,
+    );
+  }
+
+  if (options.command !== "install" || options.dryRun) {
+    return;
+  }
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
     return;
   }
 
-  const sourceDir = path.join(repoRoot, "plugins", pluginNames.cursor);
-  const destDir = cursorUserLocalPluginPath();
-
-  if (options.dryRun) {
-    console.log(`[dry-run] would sync Cursor plugin: ${sourceDir} -> ${destDir}`);
-    return;
+  const answer = await readLine("Proceed with this skill installation? [y/N] ");
+  if (!["y", "yes"].includes(answer.toLowerCase())) {
+    throw new Error("Installation cancelled.");
   }
-
-  if (!fs.existsSync(sourceDir)) {
-    console.warn(`warning: Cursor plugin output missing at ${sourceDir}; cannot sync to ~/.cursor/plugins/local`);
-    return;
-  }
-
-  console.log(`Installing Cursor plugin for local use: ${destDir}`);
-  removeDir(destDir);
-  ensureDir(path.dirname(destDir));
-  fs.cpSync(sourceDir, destDir, { recursive: true });
 }
 
-function main() {
+function installSkillsToDestinations({ destinations, dryRun }) {
+  for (const destination of destinations) {
+    console.log(
+      `Installing ${destination.selectedSkills.length} ${destination.target} skills to ${destination.destinationRoot}`,
+    );
+
+    for (const skill of destination.selectedSkills) {
+      const source = path.join(destination.sourceDir, skill);
+      const target = path.join(destination.destinationRoot, skill);
+
+      if (dryRun) {
+        console.log(`[dry-run] copy ${source} -> ${target}`);
+        continue;
+      }
+
+      if (!fs.existsSync(source)) {
+        throw new Error(`Generated skill missing: ${source}`);
+      }
+
+      removeDir(target);
+      copyDir(source, target);
+    }
+  }
+}
+
+async function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (options.skipCursorLocalPlugin) {
+    console.warn("warning: --skip-cursor-local-plugin is deprecated; Cursor now installs skills directly.");
+  }
+  await promptInstallScope(options);
 
   if (!options.skipInstall) {
     runCommand("npx", buildInstallArgs(options, options.action), options.dryRun);
@@ -435,18 +487,27 @@ function main() {
     console.log("Skipping official BMAD install; generating adapter outputs only.");
   }
 
+  const selectedSkillsByTarget = {};
   if (options.target === "claude" || options.target === "both") {
-    generateClaudePlugin(options);
+    selectedSkillsByTarget.claude = generateClaudePlugin(options);
   }
   if (options.target === "codex" || options.target === "both") {
-    generateCodexPlugin(options);
+    selectedSkillsByTarget.codex = generateCodexPlugin(options);
   }
   if (options.target === "cursor" || options.target === "both") {
-    generateCursorPlugin(options);
-    syncCursorPluginToUserLocal(options);
+    selectedSkillsByTarget.cursor = generateCursorPlugin(options);
+  }
+
+  if (options.command !== "generate") {
+    const destinations = resolveSkillInstallDestinations(options, selectedSkillsByTarget);
+    await confirmInstallPlan(destinations, options);
+    installSkillsToDestinations({ destinations, dryRun: options.dryRun });
   }
 
   console.log("Done.");
 }
 
-main();
+main().catch((error) => {
+  console.error(error.message);
+  process.exit(1);
+});

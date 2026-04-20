@@ -10,6 +10,9 @@ From the repository root:
 npx mourner-bmad-workflow install --target claude
 ```
 
+The installer asks whether to install Claude Code skills at project or global scope. Use
+`--scope project` or `--scope global` for automation.
+
 That command will:
 
 1. run official BMAD install for the current directory
@@ -17,7 +20,8 @@ That command will:
 3. include this repo's `custom-content/`
 4. sync `customize/agents/*.customize.yaml`
 5. regenerate `plugins/mourner-bmad-workflow-claude/`
-6. expose only:
+6. install selected skills to `.claude/skills/` for project scope or `~/.claude/skills/` for global scope
+7. expose only:
    - `bmad-help`
    - `bmad-code-review`
    - `bmad-generate-project-context`

@@ -83,11 +83,11 @@ function main() {
     "plugins/mourner-bmad-workflow-claude/.claude-plugin/plugin.json",
     "plugins/mourner-bmad-workflow-codex/.codex-plugin/plugin.json",
     "plugins/mourner-bmad-workflow-cursor/.cursor-plugin/plugin.json",
-    "plugins/mourner-bmad-workflow-cursor/commands/bmad-help.md",
-    "plugins/mourner-bmad-workflow-cursor/commands/bmad-code-review.md",
-    "plugins/mourner-bmad-workflow-cursor/commands/bmad-generate-project-context.md",
-    "plugins/mourner-bmad-workflow-cursor/commands/bmad-quick-dev.md",
-    "plugins/mourner-bmad-workflow-cursor/commands/bmad-brainstorming.md",
+    "plugins/mourner-bmad-workflow-cursor/skills/bmad-help/SKILL.md",
+    "plugins/mourner-bmad-workflow-cursor/skills/bmad-code-review/SKILL.md",
+    "plugins/mourner-bmad-workflow-cursor/skills/bmad-generate-project-context/SKILL.md",
+    "plugins/mourner-bmad-workflow-cursor/skills/bmad-quick-dev/SKILL.md",
+    "plugins/mourner-bmad-workflow-cursor/skills/bmad-brainstorming/SKILL.md",
     "adapters/codex/marketplace.local.example.json",
     "docs/cursor-adapter.md",
     "docs/install-cursor-plugin.md",
@@ -106,6 +106,12 @@ function main() {
   }
   if (cursorPlugin.name !== "mourner-bmad-workflow-cursor") {
     fail(`unexpected Cursor plugin name: ${cursorPlugin.name}`);
+  }
+  if (cursorPlugin.skills !== "./skills/") {
+    fail("Cursor plugin must point skills to ./skills/");
+  }
+  if (Object.prototype.hasOwnProperty.call(cursorPlugin, "commands")) {
+    fail("Cursor plugin must not expose commands; use skills instead");
   }
 
   const marketplaceExample = readJson("adapters/codex/marketplace.local.example.json");
@@ -126,6 +132,9 @@ function main() {
   }
   if (!helpOutput.includes("--target <claude|codex|cursor|both>")) {
     fail("CLI help output does not include cursor target help");
+  }
+  if (!helpOutput.includes("--scope <project|global>")) {
+    fail("CLI help output does not include scope help");
   }
   if (!helpOutput.includes("--skip-cursor-local-plugin")) {
     fail("CLI help output does not include skip-cursor-local-plugin");
@@ -154,8 +163,14 @@ function main() {
   if (!installerSource.includes('"bmad-brainstorming"')) {
     fail("installer is missing the default bmad-brainstorming preset entry");
   }
-  if (!installerSource.includes("syncCursorPluginToUserLocal")) {
-    fail("installer is missing Cursor ~/.cursor/plugins/local sync");
+  if (!installerSource.includes('".cursor", "skills"')) {
+    fail("installer is missing Cursor .cursor/skills install path");
+  }
+  if (!installerSource.includes('".agents", "skills"')) {
+    fail("installer is missing Codex .agents/skills install path");
+  }
+  if (!installerSource.includes('".claude", "skills"')) {
+    fail("installer is missing Claude .claude/skills install path");
   }
 
   ensureNoLegacyNames();

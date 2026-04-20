@@ -12,7 +12,7 @@ or used directly with:
 npx mourner-bmad-workflow install
 ```
 
-By default, the generated Claude/Codex/Cursor wrappers only expose:
+By default, the generated Claude/Codex/Cursor wrappers only expose these skills:
 
 - `bmad-help`
 - `bmad-code-review`
@@ -86,4 +86,3 @@ Verify who you are:
 ```bash
 npm whoami --registry https://registry.npmjs.org/
 ```
-

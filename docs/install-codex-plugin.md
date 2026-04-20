@@ -10,13 +10,17 @@ From the repository root:
 npx mourner-bmad-workflow install --target codex
 ```
 
+The installer asks whether to install Codex skills at project or global scope. Use
+`--scope project` or `--scope global` for automation.
+
 That command will:
 
 1. run official BMAD install with `claude-code` enabled as the compiled-skill source
 2. include this repo's personal custom content
 3. sync `.customize.yaml` overrides
 4. generate `plugins/mourner-bmad-workflow-codex/`
-5. expose only:
+5. install selected skills to `.agents/skills/` for project scope or `~/.agents/skills/` for global scope
+6. expose only:
    - `bmad-help`
    - `bmad-code-review`
    - `bmad-generate-project-context`

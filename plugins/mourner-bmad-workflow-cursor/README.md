@@ -2,10 +2,10 @@
 
 This folder is the generated Cursor plugin wrapper for:
 
-- official BMAD workflows (files under `workflow/`, used when you run `/bmad-*` commands)
+- official BMAD Agent Skills (files under `skills/`)
 - personal add-on content from this repository
 
-The manifest lists **`commands/`** only.
+The manifest lists **`skills/`** so Cursor can discover each `SKILL.md` directly.
 
 Regenerate it with:
 

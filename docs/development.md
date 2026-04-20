@@ -56,4 +56,4 @@ npm run generate:cursor
 - `custom-content/`: personal add-on module
 - `plugins/`: generated/example plugin outputs
 - `adapters/codex/marketplace.local.example.json`: template for Codex local marketplace (copy to `.agents/plugins/marketplace.json`; `.agents/` is gitignored)
-- `plugins/mourner-bmad-workflow-cursor/`: repo-local Cursor plugin output
+- `plugins/mourner-bmad-workflow-cursor/`: repo-local Cursor plugin output with Agent Skills under `skills/`

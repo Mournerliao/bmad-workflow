@@ -7,7 +7,7 @@ This repository does not maintain a forked BMAD core anymore. It now exists to:
 - install official BMAD into a project
 - inject personal `.customize.yaml` overrides
 - attach a personal add-on module via `--custom-content`
-- generate local adapter outputs for Claude Code, Codex, and Cursor with a minimal official command set
+- generate local adapter outputs for Claude Code, Codex, and Cursor with a minimal official skill set
 
 The operating model is:
 
@@ -29,11 +29,14 @@ Install official BMAD plus Mourner's enhancements into the current project:
 npx mourner-bmad-workflow install
 ```
 
+Install prompts for project-level or global-level skill installation. Project-level is the recommended default.
+For automation, pass `--scope project` or `--scope global`.
+
 Useful variants:
 
-- `npx mourner-bmad-workflow install --target claude`
-- `npx mourner-bmad-workflow install --target codex`
-- `npx mourner-bmad-workflow install --target cursor`
+- `npx mourner-bmad-workflow install --target claude --scope project`
+- `npx mourner-bmad-workflow install --target codex --scope project`
+- `npx mourner-bmad-workflow install --target cursor --scope project`
 - `npx mourner-bmad-workflow install --preset full`
 - `npx mourner-bmad-workflow verify --dry-run`
 
@@ -44,9 +47,9 @@ Developer mode inside this repository still works:
 - `npm run generate:codex`
 - `npm run generate:cursor`
 
-## Default Exposed Commands
+## Default Exposed Skills
 
-By default, this package only exposes a minimal set of official BMAD commands:
+By default, this package only exposes a minimal set of official BMAD skills:
 
 - `bmad-help`
 - `bmad-code-review`

@@ -2,7 +2,7 @@
   "name": "mourner-bmad-workflow-cursor",
   "displayName": "Mourner BMAD Workflow",
   "version": "0.1.0",
-  "description": "Cursor packaging for official BMAD workflows; slash commands and workflow bundles.",
+  "description": "Cursor packaging for official BMAD workflows as Agent Skills.",
   "author": {
     "name": "Mournerliao",
     "email": "997749670@qq.com"
@@ -17,5 +17,5 @@
     "plugin",
     "solo-development"
   ],
-  "commands": "./commands/"
+  "skills": "./skills/"
 }

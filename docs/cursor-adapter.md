@@ -6,7 +6,6 @@ Cursor is handled as a packaging target layered on top of an official BMAD insta
 
 1. Official BMAD installs with `claude-code` enabled.
 2. Upstream BMAD generates skills into `.claude/skills/`.
-3. This repository copies the selected upstream skill folders into `plugins/mourner-bmad-workflow-cursor/workflow/`.
-4. This repository generates Cursor slash commands into `plugins/mourner-bmad-workflow-cursor/commands/`.
-5. The manifest lists **commands** only. A `/bmad-*` run follows `workflow/<name>/SKILL.md`.
-6. Cursor loads the resulting local plugin from the generated plugin directory.
+3. This repository copies the selected upstream skill folders into `plugins/mourner-bmad-workflow-cursor/skills/`.
+4. The manifest lists **skills** so Cursor can discover each `SKILL.md` directly.
+5. Install writes those skills to `.cursor/skills/` for project scope or `~/.cursor/skills/` for global scope after user confirmation.
